@@ -1,25 +1,19 @@
 package com.planeshootinggame;
 
-import java.util.Iterator;
-
-import javafx.geometry.Pos;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 public class Player extends GameObject {
     private double speed = 20;
-    public Pos position;
     private Pane root;
-    static int lives;
+    int lives;
 
     public Player(double x, double y, Pane root) {
         super(x,y,100,150);
         this.root = root;
         this.lives = 3;
         Rectangle r = (Rectangle) sprite;
-        r.setX(x);
-        r.setY(y);
         r.setFill(Color.RED);
         root.getChildren().add(r);
     }
@@ -54,8 +48,4 @@ public class Player extends GameObject {
     
     @Override
     public void update(){}
-
-    // public void removeOffscreen() {
-            
-    // }
 }

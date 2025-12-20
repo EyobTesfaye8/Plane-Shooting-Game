@@ -53,7 +53,11 @@ public class GameEngine extends App{
                 }
                 enemies.getEnemies().clear();
                 //reset bullets
-                
+                for (Iterator<Bullet> it = bullets.getBullets().iterator();it.hasNext();) {
+                    Bullet b = it.next();
+                    root.getChildren().remove(b.getSprite());
+                }
+                bullets.getBullets().clear();
                 //reset powerups
 
                 StackPane menu = new StackPane();
@@ -81,26 +85,18 @@ public class GameEngine extends App{
     public void setInput(){
         App.scene.setOnKeyPressed(e -> {
             switch (e.getCode()) {
-                case LEFT:  left = true;
-                    break;
-                case RIGHT: right = true;
-                    break;
-                case UP: up = true;
-                    break;
-                case DOWN: down = true;
-                    break;
+                case LEFT -> left = true;
+                case RIGHT -> right = true;
+                case UP -> up = true;
+                case DOWN -> down = true;
             }
         });
         App.scene.setOnKeyReleased(e -> {
             switch (e.getCode()) {
-                case LEFT:  left = false;
-                    break;
-                case RIGHT: right = false;
-                    break;
-                case UP: up = false;
-                    break;
-                case DOWN: down = false;
-                    break;
+                case LEFT -> left = false;
+                case RIGHT -> right = false;
+                case UP -> up = false;
+                case DOWN -> down = false;
             }
         });
     }

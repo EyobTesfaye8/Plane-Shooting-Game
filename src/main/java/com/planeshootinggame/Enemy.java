@@ -1,9 +1,18 @@
 package com.planeshootinggame;
 
+import com.planeshootinggame.EnemyTypes.BigEnemy;
+import com.planeshootinggame.EnemyTypes.FastEnemy;
+import com.planeshootinggame.EnemyTypes.NormalEnemy;
+import com.planeshootinggame.EnemyTypes.ShootingEnemy;
+
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
-public class Enemy extends GameObject {
+abstract public sealed class Enemy extends GameObject 
+            permits ShootingEnemy, 
+                    FastEnemy, 
+                    BigEnemy, 
+                    NormalEnemy {
     private double dx = 0;
     private double dy = 2;
 
