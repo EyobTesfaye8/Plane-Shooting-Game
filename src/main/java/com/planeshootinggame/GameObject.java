@@ -12,12 +12,21 @@ public abstract class GameObject {
         sprite = new Rectangle(width, height);
     }
 
+    protected void updateSprite(){
+        sprite.setTranslateX(x);
+        sprite.setTranslateY(y);
+    }
+
+    public Node getSprite(){return sprite;}
+
+    public abstract boolean outOfScreenH();
+    public abstract boolean outOfScreenV();
     public abstract void update();
 
     public boolean intersects(GameObject other) {
         return this.x < other.x + other.width &&
-               this.x + this.width > other.x &&
-               this.y < other.y + other.height &&
-               this.y + this.height > other.y;
+            this.x + this.width > other.x &&
+            this.y < other.y + other.height &&
+            this.y + this.height > other.y;
     }
 }

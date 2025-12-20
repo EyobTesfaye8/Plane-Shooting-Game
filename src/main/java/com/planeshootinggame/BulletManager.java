@@ -13,15 +13,24 @@ public class BulletManager {
 
     public void addBullet(Bullet b) {
         bullets.add(b);
+        root.getChildren().add(b.getSprite());
     }
 
     public void update() {
         for (Bullet b : bullets) b.update();
     }
 
+    public Pane getRoot(){return this.root;}
+
     public List<Bullet> getBullets() { return bullets; }
 
     public void removeOffscreen() {
-        
+        for(Iterator<Bullet> it = bullets.iterator(); it.hasNext();){
+            Bullet b = it.next();
+            if(b.outOfScreenV()){
+                it.remove();
+                root.getChildren().remove(b.getSprite());
+            }
+        }
     }
 }

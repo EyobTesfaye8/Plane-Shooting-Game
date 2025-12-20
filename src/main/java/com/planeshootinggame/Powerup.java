@@ -12,8 +12,18 @@ public class Powerup extends GameObject {
     }
 
     @Override
+    public boolean outOfScreenH(){
+        return x < 0 || x > App.sWidth-width; 
+    }
+
+    @Override
+    public boolean outOfScreenV(){
+        return y < 0 || y > App.sheight-height; 
+    }
+
+    @Override
     public void update() {
-        
+        y += dy;
     }
 
     public void apply(Player p) {

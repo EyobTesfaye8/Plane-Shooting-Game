@@ -1,37 +1,35 @@
 package com.planeshootinggame;
 
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Group;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import java.io.IOException;
 
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 /**
  * JavaFX App
  */
 public class App extends Application {
-
-    private static Scene scene;
+    static int sWidth = 2000;
+    static int sheight = 1500;
+    protected static Scene scene;
 
     @Override
     public void start(Stage stage) throws IOException {
-        Group root = new Group();
-        scene = new Scene(root, Color.BLACK);
-        stage.setFullScreen(true);
+        GridPane root = new GridPane();
+        GameEngine g = new GameEngine(root);
+        scene = new Scene(g.getRoot());
+        stage.setX(500);
+        stage.setY(200);
+        stage.setMinWidth(sWidth);
+        stage.setMinHeight(sheight);
+        stage.setResizable(false);
         stage.setScene(scene);
         stage.show();
-    }
 
-    static void setRoot(String fxml) throws IOException {
-        scene.setRoot(loadFXML(fxml));
-    }
-
-    private static Parent loadFXML(String fxml) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
-        return fxmlLoader.load();
+        g.startGame();
     }
 
     public static void main(String[] args) {

@@ -25,6 +25,8 @@ public class PowerupManager {
 
     }
 
+    public Pane getRoot(){return this.root;}
+
     public void removeOffscreen(double height) {
         
     }
