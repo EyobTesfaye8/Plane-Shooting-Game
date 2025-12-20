@@ -12,8 +12,8 @@ import javafx.scene.layout.Pane;
  * JavaFX App
  */
 public class App extends Application {
-    static int sWidth = 2000;
-    static int sheight = 1500;
+    public static int sWidth = 2000;
+    public static int sheight = 1500;
     protected static Scene scene;
 
     @Override
@@ -26,6 +26,7 @@ public class App extends Application {
         stage.setMinWidth(sWidth);
         stage.setMinHeight(sheight);
         stage.setResizable(false);
+        stage.setTitle("Plane Shooting Game");
         stage.setScene(scene);
         stage.show();
 

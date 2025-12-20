@@ -9,6 +9,11 @@ import javafx.scene.text.Text;
 import javafx.scene.text.Font;
 import java.util.Iterator;
 
+import com.planeshootinggame.EnemyTypes.BigEnemy;
+import com.planeshootinggame.EnemyTypes.DancingEnemy;
+import com.planeshootinggame.EnemyTypes.FastEnemy;
+import com.planeshootinggame.EnemyTypes.NormalEnemy;
+
 public class GameEngine extends App{
     private Pane root;
     private AnimationTimer timer;
@@ -16,14 +21,14 @@ public class GameEngine extends App{
     private BulletManager bullets;
     private EnemyManager enemies;
     private PowerupManager powerups;
-    private boolean left, right, up, down;
-    private boolean canBeIntersected = true;
     private Text scoreText;
     private int score = 0;
-    static boolean gameOver = false, gamePaused = false;
-    private long enemySpawnInterval =       1000000000L,lastEnemySpawn = 0;
-    private long playerImmunityInterval =   3000000000L, lastImmunity = 0;
-    private long playerShootInterval =      300000000L, lastShot = 0;
+    private boolean left, right, up, down;
+    private boolean canBeIntersected = true;
+    private boolean gameOver = false, gamePaused = false;
+    private long enemySpawnInterval =       1000000000L,    lastEnemySpawn = 0;
+    private long playerImmunityInterval =   3000000000L,    lastImmunity = 0;
+    private long playerShootInterval =      200000000L,     lastShot = 0;
 
     public GameEngine(Pane root) {
         this.root = root;
@@ -114,9 +119,10 @@ public class GameEngine extends App{
             enemies.spawnEnemy();
             lastEnemySpawn = now;
         }
+        Enemy e = enemies.getEnemies().get(0);
+        System.out.println(((DancingEnemy)e).nextDestination);
         if(now - lastShot >= playerShootInterval){
             Bullet b = new Bullet(player.x+player.width/2, player.y);
-            // System.out.println("bullet added");
             bullets.addBullet(b);
             lastShot = now;
         }
@@ -152,12 +158,50 @@ public class GameEngine extends App{
             for(Iterator<Bullet> itB = bullets.getBullets().iterator();itB.hasNext();){
                 Bullet b = itB.next();
                 if(e.intersects(b)){
-                    itE.remove();
-                    root.getChildren().remove(e.getSprite());
+                    if(e.getClass() == NormalEnemy.class){
+                        if(e.health <= 0){
+                            score+=10;
+                            itE.remove();
+                            root.getChildren().remove(e.getSprite());
+                        }
+                        else{
+                            e.damage();
+                        }
+                    }
+                    else if(e.getClass() == FastEnemy.class){
+                        if(e.health <= 0){
+                            score+=30;
+                            itE.remove();
+                            root.getChildren().remove(e.getSprite());
+                        }
+                        else{
+                            e.damage();
+                        }
+                    }
+                    else if(e.getClass() == BigEnemy.class){
+                        if(e.health <= 0){
+                            score+=50;
+                            itE.remove();
+                            root.getChildren().remove(e.getSprite());
+                        }
+                        else{
+                            e.damage();
+                        }
+                    }
+                    else{
+                        if(e.health <= 0){
+                            score+=30;
+                            itE.remove();
+                            root.getChildren().remove(e.getSprite());
+                        }
+                        else{
+                            e.damage();
+                        }
+                    }
+
+                    scoreText.setText("Score: "+score);
                     itB.remove();
                     root.getChildren().remove(b.getSprite());
-                    score+=10;
-                    scoreText.setText("Score: "+score);
                 }
             }
         }

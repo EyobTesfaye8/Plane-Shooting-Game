@@ -1,25 +1,28 @@
 package com.planeshootinggame;
 
 import com.planeshootinggame.EnemyTypes.BigEnemy;
+import com.planeshootinggame.EnemyTypes.DancingEnemy;
 import com.planeshootinggame.EnemyTypes.FastEnemy;
 import com.planeshootinggame.EnemyTypes.NormalEnemy;
 import com.planeshootinggame.EnemyTypes.ShootingEnemy;
 
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-
 abstract public sealed class Enemy extends GameObject 
             permits ShootingEnemy, 
                     FastEnemy, 
-                    BigEnemy, 
-                    NormalEnemy {
-    private double dx = 0;
-    private double dy = 2;
+                    BigEnemy,
+                    NormalEnemy,
+                    DancingEnemy
+                    {
+    protected double dx;
+    protected double dy;
+    protected int health;
 
-    public Enemy(double x, double y) {
-        super(x,y,70,90);
-        Rectangle r = (Rectangle) sprite;
-        r.setFill(Color.BLUE);
+    public Enemy(double x, double y, double width, double height) {
+        super(x,y, width, height);
+    }
+    
+    public void damage(){
+        health--;
     }
 
     @Override
@@ -32,14 +35,5 @@ abstract public sealed class Enemy extends GameObject
         return y < 0 || y > App.sheight-height; 
     }
 
-    @Override
-    public void update() {
-        x += dx;
-        y += dy;
-        updateSprite();
-    }
-
-    public void attack(){
-        
-    }
+    abstract public void attack();
 }
