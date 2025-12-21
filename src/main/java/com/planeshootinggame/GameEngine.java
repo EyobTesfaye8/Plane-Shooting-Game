@@ -25,10 +25,12 @@ public class GameEngine extends App{
     private int score = 0;
     private boolean left, right, up, down;
     private boolean canBeIntersected = true;
+    private boolean isEnemyDamaged = false;
     private boolean gameOver = false, gamePaused = false;
     private long enemySpawnInterval =       1000000000L,    lastEnemySpawn = 0;
+    private long enemyImageChangeInterval = 700000000L,     lastEnemyImageChange = 0;
     private long playerImmunityInterval =   3000000000L,    lastImmunity = 0;
-    private long playerShootInterval =      200000000L,     lastShot = 0;
+    private long playerShootInterval =      500000000L,     lastShot = 0;
 
     public GameEngine(Pane root) {
         this.root = root;
@@ -41,7 +43,7 @@ public class GameEngine extends App{
     }
 
     void init_player(){
-        player = new Player(sWidth/2, 900, root);
+        player = new Player(sWidth/2, 1100, root);
     }
 
     public void startGame() {
@@ -115,15 +117,28 @@ public class GameEngine extends App{
                 lastImmunity = now;
             }
         }
+        for(Iterator<Enemy> it = enemies.getEnemies().iterator(); it.hasNext();){
+            Enemy e = it.next();
+            if(e.getDamageStatus()){
+                if(now - lastEnemyImageChange >= enemyImageChangeInterval){
+                    e.resetDamageStatus();
+                    lastEnemyImageChange = now;
+                }
+            }
+        }
         if(now - lastEnemySpawn >= enemySpawnInterval){
             enemies.spawnEnemy();
             lastEnemySpawn = now;
         }
-        Enemy e = enemies.getEnemies().get(0);
-        System.out.println(((DancingEnemy)e).nextDestination);
+        // Enemy e = enemies.getEnemies().get(0);
+        // System.out.println(((DancingEnemy)e).nextDestination);
         if(now - lastShot >= playerShootInterval){
-            Bullet b = new Bullet(player.x+player.width/2, player.y);
-            bullets.addBullet(b);
+            Bullet b1 = new Bullet(player.x+player.width/2-30, player.y);
+            // Bullet b2 = new Bullet(player.x+player.width/2, player.y);
+            // Bullet b3 = new Bullet(player.x+player.width/2+30, player.y);
+            bullets.addBullet(b1);
+            // bullets.addBullet(b2);
+            // bullets.addBullet(b3);
             lastShot = now;
         }
         enemies.update();
@@ -144,9 +159,9 @@ public class GameEngine extends App{
             if(player.intersects(e) && canBeIntersected){
                 it.remove();
                 root.getChildren().remove(e.getSprite());
-                player.lives--;
+                player.damage();
                 canBeIntersected = false;
-                if(player.lives <= 0){
+                if(player.getLives() <= 0){
                     root.getChildren().remove(player.sprite);
                     gameOver = true;
                 }
@@ -181,6 +196,16 @@ public class GameEngine extends App{
                     else if(e.getClass() == BigEnemy.class){
                         if(e.health <= 0){
                             score+=50;
+                            itE.remove();
+                            root.getChildren().remove(e.getSprite());
+                        }
+                        else{
+                            e.damage();
+                        }
+                    }
+                    else if(e.getClass() == DancingEnemy.class){
+                        if(e.health <= 0){
+                            score+=40;
                             itE.remove();
                             root.getChildren().remove(e.getSprite());
                         }

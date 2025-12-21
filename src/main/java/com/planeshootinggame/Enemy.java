@@ -12,10 +12,11 @@ abstract public sealed class Enemy extends GameObject
                     BigEnemy,
                     NormalEnemy,
                     DancingEnemy
-                    {
+{
+    protected int health;
     protected double dx;
     protected double dy;
-    protected int health;
+    private boolean isDamaged = false;
 
     public Enemy(double x, double y, double width, double height) {
         super(x,y, width, height);
@@ -23,7 +24,12 @@ abstract public sealed class Enemy extends GameObject
     
     public void damage(){
         health--;
+        isDamaged = true;
     }
+
+    public void resetDamageStatus(){isDamaged = false;}
+
+    public boolean getDamageStatus(){return isDamaged;}
 
     @Override
     public boolean outOfScreenH(){
@@ -36,4 +42,6 @@ abstract public sealed class Enemy extends GameObject
     }
 
     abstract public void attack();
+
+    abstract public void changeImage();
 }

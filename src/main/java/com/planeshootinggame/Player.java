@@ -5,18 +5,26 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 public class Player extends GameObject {
-    private double speed = 20;
     private Pane root;
-    int lives;
+    private int lives;
+    private double speed;
 
     public Player(double x, double y, Pane root) {
         super(x,y,100,150);
         this.root = root;
         this.lives = 3;
+        this.speed = 20;
+        
         Rectangle r = (Rectangle) sprite;
         r.setFill(Color.RED);
         root.getChildren().add(r);
     }
+
+    public int getLives(){return lives;}
+
+    public void damage(){lives--;}
+
+    public void heal(){lives++;}
 
     @Override
     public boolean outOfScreenH(){

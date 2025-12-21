@@ -8,6 +8,7 @@ import javafx.scene.image.Image;
 
 final public class NormalEnemy extends Enemy {
     private double powerupDropChance = 0.05; 
+    Rectangle r = (Rectangle) sprite;
     // private Image normalEnemyIMG = new Image("");
     
 
@@ -15,7 +16,6 @@ final public class NormalEnemy extends Enemy {
         super(x,y, 60, 70);
         this.dy = 5;
         this.health = 3;
-        Rectangle r = (Rectangle) sprite;
         r.setFill(Color.BLUE);
     }
 
@@ -28,5 +28,13 @@ final public class NormalEnemy extends Enemy {
     @Override
     public void attack(){
         // Normal enemies do not shoot / attack
+    }
+
+    @Override
+    public void changeImage(){
+        if(this.getDamageStatus())
+            r.setFill(Color.BLACK);
+        else
+            r.setFill(Color.BLUE);
     }
 }

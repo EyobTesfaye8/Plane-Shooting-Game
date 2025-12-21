@@ -7,6 +7,7 @@ import javafx.scene.shape.Rectangle;
 
 final public class FastEnemy extends Enemy {
     private double powerupDropChance = 0.15; 
+    Rectangle r = (Rectangle) sprite;
     // private Image normalEnemyIMG = new Image("");
     
 
@@ -14,7 +15,6 @@ final public class FastEnemy extends Enemy {
         super(x,y, 80, 90);
         this.dy = 10;
         this.health = 2;
-        Rectangle r = (Rectangle) sprite;
         r.setFill(Color.TOMATO);
     }
 
@@ -27,5 +27,13 @@ final public class FastEnemy extends Enemy {
     @Override
     public void attack(){
         // fast enemies do not shoot / attack
+    }
+
+    @Override
+    public void changeImage(){
+        if(this.getDamageStatus())
+            r.setFill(Color.BLACK);
+        else
+            r.setFill(Color.TOMATO);
     }
 }

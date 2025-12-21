@@ -1,6 +1,5 @@
 package com.planeshootinggame;
 
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
@@ -8,7 +7,7 @@ public class Bullet extends GameObject {
     private double dy=20;
 
     public Bullet(double x, double y) {
-        super(x,y,12,24);
+        super(x,y,12,74);
         // this.dy = dy;
         Rectangle r = (Rectangle) sprite;
         r.setFill(Color.BLACK);

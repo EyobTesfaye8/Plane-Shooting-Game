@@ -7,6 +7,7 @@ import javafx.scene.shape.Rectangle;
 
 final public class BigEnemy extends Enemy {
     private double powerupDropChance = 0.20; 
+    Rectangle r = (Rectangle) sprite;
     // private Image normalEnemyIMG = new Image("");
     
 
@@ -14,7 +15,6 @@ final public class BigEnemy extends Enemy {
         super(x,y, 110, 140);
         this.dy = 3;
         this.health = 5;
-        Rectangle r = (Rectangle) sprite;
         r.setFill(Color.MAGENTA);
     }
 
@@ -27,5 +27,13 @@ final public class BigEnemy extends Enemy {
     @Override
     public void attack(){
         // Big enemies shoot / attack....later to be implemented
+    }
+
+    @Override
+    public void changeImage(){
+        if(this.getDamageStatus())
+            r.setFill(Color.BLACK);
+        else
+            r.setFill(Color.MAGENTA);
     }
 }
