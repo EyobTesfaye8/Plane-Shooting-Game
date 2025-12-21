@@ -4,13 +4,8 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import java.io.IOException;
-
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
-/**
- * JavaFX App
- */
+
 public class App extends Application {
     public static int sWidth = 2000;
     public static int sheight = 1500;

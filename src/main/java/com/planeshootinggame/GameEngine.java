@@ -8,11 +8,10 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.Font;
 import java.util.Iterator;
+import java.util.concurrent.CompletableFuture;
 
-import com.planeshootinggame.EnemyTypes.BigEnemy;
-import com.planeshootinggame.EnemyTypes.DancingEnemy;
-import com.planeshootinggame.EnemyTypes.FastEnemy;
-import com.planeshootinggame.EnemyTypes.NormalEnemy;
+import com.planeshootinggame.EnemyTypes.*;
+import com.planeshootinggame.BulletTypes.*;
 
 public class GameEngine extends App{
     private Pane root;
@@ -28,7 +27,7 @@ public class GameEngine extends App{
     private boolean isEnemyDamaged = false;
     private boolean gameOver = false, gamePaused = false;
     private long enemySpawnInterval =       1000000000L,    lastEnemySpawn = 0;
-    private long enemyImageChangeInterval = 700000000L,     lastEnemyImageChange = 0;
+    private long enemyShootInterval =       1000000000L,    lastEnemyShoot = 0;
     private long playerImmunityInterval =   3000000000L,    lastImmunity = 0;
     private long playerShootInterval =      500000000L,     lastShot = 0;
 
@@ -49,44 +48,44 @@ public class GameEngine extends App{
     public void startGame() {
         init_player();
        timer = new AnimationTimer() {
-        @Override
-        public void handle(long now){
-            if (gameOver) {
-                timer.stop(); 
-                // reset enemies
-                for (Iterator<Enemy> it = enemies.getEnemies().iterator();it.hasNext();) {
-                    Enemy e = it.next();
-                    root.getChildren().remove(e.getSprite());
-                }
-                enemies.getEnemies().clear();
-                //reset bullets
-                for (Iterator<Bullet> it = bullets.getBullets().iterator();it.hasNext();) {
-                    Bullet b = it.next();
-                    root.getChildren().remove(b.getSprite());
-                }
-                bullets.getBullets().clear();
-                //reset powerups
+            @Override
+            public void handle(long now){
+                if (gameOver) {
+                    timer.stop(); 
+                    // reset enemies
+                    for (Iterator<Enemy> it = enemies.getEnemies().iterator();it.hasNext();) {
+                        Enemy e = it.next();
+                        root.getChildren().remove(e.getSprite());
+                    }
+                    enemies.getEnemies().clear();
+                    //reset bullets
+                    for (Iterator<Bullet> it = bullets.getBullets().iterator();it.hasNext();) {
+                        Bullet b = it.next();
+                        root.getChildren().remove(b.getSprite());
+                    }
+                    bullets.getBullets().clear();
+                    //reset powerups
 
-                StackPane menu = new StackPane();
-                Button btnOK = new Button("start over");
-                btnOK.setPrefSize(300, 50);
-                menu.getChildren().add(btnOK);
-                btnOK.setFont(Font.font("arial", FontWeight.BOLD, 30));
-                App.scene.setRoot(menu);
-                btnOK.setOnMouseClicked(e -> {System.out.println("hello");});
-                btnOK.setOnAction(e -> {
-                    gameOver = false;
-                    score = 0;
-                    App.scene.setRoot(root);
-                    init_player();
-                    timer.start();
-                });
-                return;
-            }
+                    StackPane menu = new StackPane();
+                    Button btnOK = new Button("start over");
+                    btnOK.setPrefSize(300, 50);
+                    menu.getChildren().add(btnOK);
+                    btnOK.setFont(Font.font("arial", FontWeight.BOLD, 30));
+                    App.scene.setRoot(menu);
+                    btnOK.setOnMouseClicked(e -> {System.out.println("hello");});
+                    btnOK.setOnAction(e -> {
+                        gameOver = false;
+                        score = 0;
+                        App.scene.setRoot(root);
+                        init_player();
+                        timer.start();
+                    });
+                    return;
+                }
             update(now);
-        }
-       };
-       timer.start();
+            }
+        };
+    timer.start();
     }
 
     public void setInput(){
@@ -117,23 +116,23 @@ public class GameEngine extends App{
                 lastImmunity = now;
             }
         }
-        for(Iterator<Enemy> it = enemies.getEnemies().iterator(); it.hasNext();){
-            Enemy e = it.next();
-            if(e.getDamageStatus()){
-                if(now - lastEnemyImageChange >= enemyImageChangeInterval){
-                    e.resetDamageStatus();
-                    lastEnemyImageChange = now;
-                }
-            }
-        }
         if(now - lastEnemySpawn >= enemySpawnInterval){
             enemies.spawnEnemy();
             lastEnemySpawn = now;
         }
+        for(Iterator<Enemy> it = enemies.getEnemies().iterator(); it.hasNext();){
+            Enemy e = it.next();
+            if(e.getClass() == BigEnemy.class || e.getClass() == ShootingEnemy.class){
+                if(now - lastEnemyShoot >= enemyShootInterval){
+                    e.attack();
+                    lastEnemyShoot = now;
+                }
+            }
+        }
         // Enemy e = enemies.getEnemies().get(0);
         // System.out.println(((DancingEnemy)e).nextDestination);
         if(now - lastShot >= playerShootInterval){
-            Bullet b1 = new Bullet(player.x+player.width/2-30, player.y);
+            Bullet b1 = new MegaBullet(player.x+player.width/2-30, player.y);
             // Bullet b2 = new Bullet(player.x+player.width/2, player.y);
             // Bullet b3 = new Bullet(player.x+player.width/2+30, player.y);
             bullets.addBullet(b1);
@@ -146,11 +145,23 @@ public class GameEngine extends App{
         bullets.update();
         powerups.update();
 
+        for(Iterator<Enemy> it = enemies.getEnemies().iterator(); it.hasNext();){
+            Enemy e = it.next();
+            if(e.getDamageStatus()){
+                CompletableFuture.runAsync(()->{
+                    try{
+                        Thread.sleep(60); // sleep for 30 milliseconds then reset damage status
+                        e.resetDamageStatus();
+                    }catch(InterruptedException ex){
+                        System.out.println("Tread interrupted");
+                    }
+                });
+            }
+        }
+        
         checkCollisions();
         removeOffscreen();
     }
-
-    public Pane getRoot(){return this.root;}
 
     private void checkCollisions() {
         // player vs enemy
@@ -168,19 +179,17 @@ public class GameEngine extends App{
             }
         }
         //bullet vs enemies
-        for(Iterator<Enemy> itE = enemies.getEnemies().iterator();itE.hasNext();){
-            Enemy e = itE.next();
-            for(Iterator<Bullet> itB = bullets.getBullets().iterator();itB.hasNext();){
-                Bullet b = itB.next();
+        for(Iterator<Bullet> itB = bullets.getBullets().iterator();itB.hasNext();){
+            Bullet b = itB.next();
+            for(Iterator<Enemy> itE = enemies.getEnemies().iterator();itE.hasNext();){
+                Enemy e = itE.next();
                 if(e.intersects(b)){
+                    e.damage(b.bulletPower());
                     if(e.getClass() == NormalEnemy.class){
                         if(e.health <= 0){
                             score+=10;
                             itE.remove();
                             root.getChildren().remove(e.getSprite());
-                        }
-                        else{
-                            e.damage();
                         }
                     }
                     else if(e.getClass() == FastEnemy.class){
@@ -189,18 +198,12 @@ public class GameEngine extends App{
                             itE.remove();
                             root.getChildren().remove(e.getSprite());
                         }
-                        else{
-                            e.damage();
-                        }
                     }
                     else if(e.getClass() == BigEnemy.class){
                         if(e.health <= 0){
                             score+=50;
                             itE.remove();
                             root.getChildren().remove(e.getSprite());
-                        }
-                        else{
-                            e.damage();
                         }
                     }
                     else if(e.getClass() == DancingEnemy.class){
@@ -209,9 +212,6 @@ public class GameEngine extends App{
                             itE.remove();
                             root.getChildren().remove(e.getSprite());
                         }
-                        else{
-                            e.damage();
-                        }
                     }
                     else{
                         if(e.health <= 0){
@@ -219,11 +219,7 @@ public class GameEngine extends App{
                             itE.remove();
                             root.getChildren().remove(e.getSprite());
                         }
-                        else{
-                            e.damage();
-                        }
                     }
-
                     scoreText.setText("Score: "+score);
                     itB.remove();
                     root.getChildren().remove(b.getSprite());
@@ -231,8 +227,9 @@ public class GameEngine extends App{
             }
         }
         // player vs powerups
-    }
 
+    }
+        
     public void removeOffscreen(){
         // player.removeOffscreen();
         enemies.removeOffscreen();
@@ -240,7 +237,9 @@ public class GameEngine extends App{
         // powerups.removeOffscreen(sheight);
     }
 
+    public Pane getRoot(){return this.root;}
+    
     private void render() {
-
+        
     }
 }

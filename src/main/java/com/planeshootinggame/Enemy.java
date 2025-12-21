@@ -1,11 +1,6 @@
 package com.planeshootinggame;
 
-import com.planeshootinggame.EnemyTypes.BigEnemy;
-import com.planeshootinggame.EnemyTypes.DancingEnemy;
-import com.planeshootinggame.EnemyTypes.FastEnemy;
-import com.planeshootinggame.EnemyTypes.NormalEnemy;
-import com.planeshootinggame.EnemyTypes.ShootingEnemy;
-
+import com.planeshootinggame.EnemyTypes.*;
 abstract public sealed class Enemy extends GameObject 
             permits ShootingEnemy, 
                     FastEnemy, 
@@ -22,8 +17,8 @@ abstract public sealed class Enemy extends GameObject
         super(x,y, width, height);
     }
     
-    public void damage(){
-        health--;
+    public void damage(int bulletPower){
+        health-=bulletPower;
         isDamaged = true;
     }
 

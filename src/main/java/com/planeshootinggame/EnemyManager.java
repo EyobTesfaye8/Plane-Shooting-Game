@@ -45,6 +45,7 @@ public class EnemyManager {
         for (Enemy e : enemies) {
             e.update();
             e.changeImage();
+            e.attack();
         }
         // removeOffscreen();
     }

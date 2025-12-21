@@ -9,7 +9,6 @@ final public class BigEnemy extends Enemy {
     private double powerupDropChance = 0.20; 
     Rectangle r = (Rectangle) sprite;
     // private Image normalEnemyIMG = new Image("");
-    
 
     public BigEnemy(double x, double y){
         super(x,y, 110, 140);

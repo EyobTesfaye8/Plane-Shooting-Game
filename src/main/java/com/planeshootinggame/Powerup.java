@@ -9,6 +9,8 @@ public class Powerup extends GameObject {
     public Powerup(double x, double y, PowerupType type) {
         super(x,y,18,18);
         this.type = type;
+        Rectangle r = (Rectangle) sprite;
+        r.setFill(Color.YELLOW);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.planeshootinggame.EnemyTypes;
 
-import com.planeshootinggame.Enemy;
+import com.planeshootinggame.*;
+import com.planeshootinggame.BulletTypes.EnemyBullet;
 
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -26,7 +27,7 @@ final public class ShootingEnemy extends Enemy {
 
     @Override
     public void attack(){
-        // Big enemies shoot / attack....later to be implemented
+        Bullet b = new EnemyBullet(x + width/2, y, 7);
     }
 
     @Override

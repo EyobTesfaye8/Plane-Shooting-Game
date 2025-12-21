@@ -4,7 +4,7 @@ import com.planeshootinggame.*;
 
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.image.Image;
+// import javafx.scene.image.Image;
 
 final public class NormalEnemy extends Enemy {
     private double powerupDropChance = 0.05; 
