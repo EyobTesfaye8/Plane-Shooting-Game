@@ -26,13 +26,13 @@ final public class NormalEnemy extends Enemy {
     }
 
     @Override
-    public void attack(){
+    public void shootTimer(){
         // Normal enemies do not shoot / attack
     }
 
     @Override
     public void changeImage(){
-        if(this.getDamageStatus())
+        if(this.isDamaged())
             r.setFill(Color.BLACK);
         else
             r.setFill(Color.BLUE);

@@ -1,5 +1,7 @@
 package com.planeshootinggame.EnemyTypes;
 
+import java.util.concurrent.CompletableFuture;
+
 import com.planeshootinggame.*;
 import com.planeshootinggame.BulletTypes.EnemyBullet;
 
@@ -9,6 +11,7 @@ import javafx.scene.shape.Rectangle;
 final public class ShootingEnemy extends Enemy {
     private double powerupDropChance = 0.30; 
     Rectangle r = (Rectangle) sprite;
+    GameEngine g;
     // private Image normalEnemyIMG = new Image("");
     
 
@@ -26,13 +29,20 @@ final public class ShootingEnemy extends Enemy {
     }
 
     @Override
-    public void attack(){
-        Bullet b = new EnemyBullet(x + width/2, y, 7);
+    public void shootTimer(){
+        CompletableFuture.runAsync(()->{
+            try{
+                Thread.sleep((long)(Math.random()*1500 + 500));
+                canShoot = true;
+            }catch(InterruptedException e){
+                // ignore
+            }
+        });
     }
 
     @Override
     public void changeImage(){
-        if(this.getDamageStatus())
+        if(this.isDamaged())
             r.setFill(Color.BLACK);
         else
             r.setFill(Color.YELLOWGREEN);

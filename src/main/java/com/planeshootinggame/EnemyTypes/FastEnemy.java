@@ -25,13 +25,13 @@ final public class FastEnemy extends Enemy {
     }
 
     @Override
-    public void attack(){
+    public void shootTimer(){
         // fast enemies do not shoot / attack
     }
 
     @Override
     public void changeImage(){
-        if(this.getDamageStatus())
+        if(this.isDamaged())
             r.setFill(Color.BLACK);
         else
             r.setFill(Color.TOMATO);

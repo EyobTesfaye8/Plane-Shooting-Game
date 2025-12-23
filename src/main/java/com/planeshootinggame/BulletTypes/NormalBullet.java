@@ -2,21 +2,22 @@ package com.planeshootinggame.BulletTypes;
 
 import com.planeshootinggame.*;
 
-import javafx.scene.shape.Rectangle;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 
-final public class EnemyBullet extends Bullet{
+final public class NormalBullet extends Bullet{
     Rectangle r = (Rectangle) sprite;
 
-    public EnemyBullet(double x, double y, double dy){
-        super(x, y, 10, 40);
-        this.dy = dy;
+    public NormalBullet(double x, double y){
+        super(x, y, 20, 50);
+        this.dy = 20;
         this.bulletPower = 1;
         r.setFill(Color.RED);
     }
+
      @Override
     public void update() {
-        y += dy;
+        y -= dy;
         updateSprite();
     }
 }

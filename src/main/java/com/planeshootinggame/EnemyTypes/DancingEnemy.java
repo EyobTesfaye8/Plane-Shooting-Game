@@ -16,8 +16,8 @@ final public class DancingEnemy extends Enemy {
     
     public DancingEnemy(double x, double y){
         super(x,y, 110, 140);
-        this.dy = 2;
-        this.dx = 1;
+        this.dy = 8;
+        this.dx = 6;
         this.health = 5;
         r.setFill(Color.ROYALBLUE);
         this.nextDestination = x;
@@ -41,13 +41,13 @@ final public class DancingEnemy extends Enemy {
     }
 
     @Override
-    public void attack(){
+    public void shootTimer(){
         // Big enemies shoot / attack....later to be implemented
     }
 
     @Override
     public void changeImage(){
-        if(this.getDamageStatus())
+        if(this.isDamaged())
             r.setFill(Color.BLACK);
         else
             r.setFill(Color.ROYALBLUE);

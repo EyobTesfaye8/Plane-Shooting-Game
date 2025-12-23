@@ -5,7 +5,8 @@ import com.planeshootinggame.BulletTypes.*;
 
 abstract public sealed class Bullet extends GameObject
                 permits EnemyBullet,
-                        MegaBullet
+                        MegaBullet,
+                        NormalBullet
 {
     protected double dy;
     protected double dx;

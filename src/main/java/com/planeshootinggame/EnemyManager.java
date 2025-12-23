@@ -25,13 +25,13 @@ public class EnemyManager {
         if(randomNUM > 600){
             enemy = new NormalEnemy(r.nextInt(App.sWidth-100), -300);
         }
-        else if (randomNUM > 200){
+        else if (randomNUM > 300){
             enemy = new FastEnemy(r.nextInt(App.sWidth-100), -300);
         }
-        else if (randomNUM > 100){
+        else if (randomNUM > 200){
             enemy = new BigEnemy(r.nextInt(App.sWidth-100), -300);
         }
-        else if (randomNUM > 50){
+        else if (randomNUM > 150){
             enemy = new ShootingEnemy(r.nextInt(App.sWidth-100), -300);
         }
         else{
@@ -45,7 +45,7 @@ public class EnemyManager {
         for (Enemy e : enemies) {
             e.update();
             e.changeImage();
-            e.attack();
+            // e.attack();
         }
         // removeOffscreen();
     }

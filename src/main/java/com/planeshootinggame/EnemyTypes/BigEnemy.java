@@ -1,5 +1,7 @@
 package com.planeshootinggame.EnemyTypes;
 
+import java.util.concurrent.CompletableFuture;
+
 import com.planeshootinggame.Enemy;
 
 import javafx.scene.paint.Color;
@@ -12,8 +14,8 @@ final public class BigEnemy extends Enemy {
 
     public BigEnemy(double x, double y){
         super(x,y, 110, 140);
-        this.dy = 3;
-        this.health = 5;
+        this.dy = 2;
+        this.health = 30;
         r.setFill(Color.MAGENTA);
     }
 
@@ -24,13 +26,20 @@ final public class BigEnemy extends Enemy {
     }
 
     @Override
-    public void attack(){
-        // Big enemies shoot / attack....later to be implemented
+    public void shootTimer(){
+        CompletableFuture.runAsync(()->{
+            try{
+                Thread.sleep((long)(Math.random()*2500 + 1500));
+                canShoot = true;
+            }catch(InterruptedException e){
+                // ignore
+            }
+        });
     }
 
     @Override
     public void changeImage(){
-        if(this.getDamageStatus())
+        if(this.isDamaged())
             r.setFill(Color.BLACK);
         else
             r.setFill(Color.MAGENTA);

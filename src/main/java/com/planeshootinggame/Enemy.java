@@ -12,6 +12,7 @@ abstract public sealed class Enemy extends GameObject
     protected double dx;
     protected double dy;
     private boolean isDamaged = false;
+    public boolean canShoot = true;
 
     public Enemy(double x, double y, double width, double height) {
         super(x,y, width, height);
@@ -23,8 +24,10 @@ abstract public sealed class Enemy extends GameObject
     }
 
     public void resetDamageStatus(){isDamaged = false;}
-
-    public boolean getDamageStatus(){return isDamaged;}
+    public boolean isDamaged(){return isDamaged;}
+    public boolean canShoot(){return canShoot;}
+    abstract public void shootTimer();
+    abstract public void changeImage();
 
     @Override
     public boolean outOfScreenH(){
@@ -36,7 +39,4 @@ abstract public sealed class Enemy extends GameObject
         return y < 0 || y > App.sheight-height; 
     }
 
-    abstract public void attack();
-
-    abstract public void changeImage();
 }
