@@ -1,17 +1,33 @@
 package com.planeshootinggame;
 
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
+import com.planeshootinggame.EnemyTypes.*;
+abstract public sealed class Enemy extends GameObject 
+            permits ShootingEnemy, 
+                    FastEnemy, 
+                    BigEnemy,
+                    NormalEnemy,
+                    DancingEnemy
+{
+    protected int health;
+    protected double dx;
+    protected double dy;
+    private boolean isDamaged = false;
+    public boolean canShoot = true;
 
-public class Enemy extends GameObject {
-    private double dx = 0;
-    private double dy = 2;
-
-    public Enemy(double x, double y) {
-        super(x,y,70,90);
-        Rectangle r = (Rectangle) sprite;
-        r.setFill(Color.BLUE);
+    public Enemy(double x, double y, double width, double height) {
+        super(x,y, width, height);
     }
+    
+    public void damage(int bulletPower){
+        health-=bulletPower;
+        isDamaged = true;
+    }
+
+    public void resetDamageStatus(){isDamaged = false;}
+    public boolean isDamaged(){return isDamaged;}
+    public boolean canShoot(){return canShoot;}
+    abstract public void shootTimer();
+    abstract public void changeImage();
 
     @Override
     public boolean outOfScreenH(){
@@ -23,14 +39,4 @@ public class Enemy extends GameObject {
         return y < 0 || y > App.sheight-height; 
     }
 
-    @Override
-    public void update() {
-        x += dx;
-        y += dy;
-        updateSprite();
-    }
-
-    public void attack(){
-        
-    }
 }

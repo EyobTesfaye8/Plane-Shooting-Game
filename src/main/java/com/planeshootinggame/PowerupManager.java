@@ -2,7 +2,7 @@ package com.planeshootinggame;
 
 import javafx.scene.layout.Pane;
 import java.util.ArrayList;
-import java.util.Iterator;
+// import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
@@ -13,7 +13,7 @@ public class PowerupManager {
     
     public PowerupManager(Pane root) { this.root = root; }
 
-    public void spawnRandom(double x, double y) {
+    public void spawnPowerupcod(double x, double y) {
        
     }
 
