@@ -1,6 +1,7 @@
 package com.planeshootinggame;
 
 import com.planeshootinggame.UI.*;
+import com.planeshootinggame.UI.screens.MainMenu;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -14,29 +15,36 @@ public class App extends Application {
     public static int sheight = 1500;
     protected static Scene scene;
     protected static GameEngine g = new GameEngine(GameRoot);
+    MainMenu menuScene = new MainMenu();
 
     @Override
     public void start(Stage stage) throws IOException {
         GameRoot.setId("gameroot");
-        scene = new Scene(g.getRoot());
+        // scene = new Scene(g.getRoot());
         // scene = new Scene(MainMenu.createMainMenu());
+        scene = new Scene(menuScene.getRoot());
         stage.setX(500);
         stage.setY(200);
         stage.setMinWidth(sWidth);
         stage.setMinHeight(sheight);
         stage.setResizable(false);
         stage.setTitle("Plane Shooting Game");
-        stage.setScene(scene);
+        // stage.setScene(scene);
         stage.show();
         System.out.println(scene.getRoot());
         // if(scene.getRoot().getId() == "gameroot"){
-            g.startGame();
+            // g.startGame(); 
         // }
         // else{
         //     System.out.println("jjjfjf");
         // }
     }
-
+    public static GameEngine getEngine(){
+        return g;
+    }
+    public static Scene getScene(){
+        return scene;
+    }
     public static void main(String[] args) {
         launch();
     }
