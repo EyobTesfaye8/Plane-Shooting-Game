@@ -20,7 +20,7 @@ public class Powerup extends GameObject {
 
     @Override
     public boolean outOfScreenV(){
-        return y < 0 || y > App.sheight-height; 
+        return y < 0 || y > App.sHeight-height; 
     }
 
     @Override

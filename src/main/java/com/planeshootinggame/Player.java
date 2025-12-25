@@ -37,7 +37,7 @@ public class Player extends GameObject {
 
     @Override
     public boolean outOfScreenV(){
-        return y < 0 || (y > App.sheight-height);
+        return y < 0 || (y > App.sHeight-height);
     }
 
     public void move(boolean left, boolean right, boolean up, boolean down) {
@@ -52,7 +52,7 @@ public class Player extends GameObject {
         if(x < 0) x = 0; 
         else if(x > App.sWidth-width) x = App.sWidth-width; 
         if(y < 0) y = 0; 
-        else if(y > App.sheight-height) y = App.sheight-height; 
+        else if(y > App.sHeight-height) y = App.sHeight-height; 
         updateSprite();
     }
     

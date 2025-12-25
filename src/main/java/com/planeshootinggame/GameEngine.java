@@ -74,20 +74,20 @@ public class GameEngine extends App{
                     playerBullets.getBullets().clear();
                     //reset powerups
 
-                    StackPane menu = new StackPane();
-                    Button btnOK = new Button("start over");
-                    btnOK.setPrefSize(300, 50);
-                    menu.getChildren().add(btnOK);
-                    btnOK.setFont(Font.font("arial", FontWeight.BOLD, 30));
-                    App.scene.setRoot(menu);
-                    btnOK.setOnMouseClicked(e -> {System.out.println("hello");});
-                    btnOK.setOnAction(e -> {
-                        gameOver = false;
-                        score = 0;
-                        App.scene.setRoot(root);
-                        init_player();
-                        timer.start();
-                    });
+                    // StackPane menu = new StackPane();
+                    // Button btnOK = new Button("start over");
+                    // btnOK.setPrefSize(300, 50);
+                    // menu.getChildren().add(btnOK);
+                    // btnOK.setFont(Font.font("arial", FontWeight.BOLD, 30));
+                    // App.scene.setRoot(menu);
+                    // btnOK.setOnMouseClicked(e -> {System.out.println("hello");});
+                    // btnOK.setOnAction(e -> {
+                    //     gameOver = false;
+                    //     score = 0;
+                    //     App.scene.setRoot(root);
+                    //     init_player();
+                    //     timer.start();
+                    // });
                     // App.scene.setRoot(MainMenu.createMainMenu());
                     return;
                 }
@@ -98,7 +98,7 @@ public class GameEngine extends App{
     }
 
     public void setInput(){
-        App.scene.setOnKeyPressed(e -> {
+        App.gameScene.setOnKeyPressed(e -> {
             switch (e.getCode()) {
                 case LEFT -> left = true;
                 case RIGHT -> right = true;
@@ -106,7 +106,7 @@ public class GameEngine extends App{
                 case DOWN -> down = true;
             }
         });
-        App.scene.setOnKeyReleased(e -> {
+        App.gameScene.setOnKeyReleased(e -> {
             switch (e.getCode()) {
                 case LEFT -> left = false;
                 case RIGHT -> right = false;

@@ -57,7 +57,7 @@ public class EnemyManager {
     public void removeOffscreen(){
         for (Iterator<Enemy> it = enemies.iterator(); it.hasNext();){
             Enemy e = it.next();
-            if(e.y+e.height > App.sheight+500){
+            if(e.y+e.height > App.sHeight+500){
                 it.remove();
                 root.getChildren().remove(e.getSprite());
             }

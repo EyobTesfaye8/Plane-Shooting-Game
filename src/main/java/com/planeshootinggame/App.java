@@ -10,28 +10,34 @@ import java.io.IOException;
 import javafx.scene.layout.GridPane;
 
 public class App extends Application {
-    static GridPane GameRoot = new GridPane();
+    public static GridPane GameRoot = new GridPane();
     public static int sWidth = 2000;
-    public static int sheight = 1500;
-    protected static Scene scene;
-    protected static GameEngine g = new GameEngine(GameRoot);
-    MainMenu menuScene = new MainMenu();
-
+    public static int sHeight = 1500;
+    public static GameEngine g;
+    public static Scene gameScene;
+    
     @Override
-    public void start(Stage stage) throws IOException {
+   public void start(Stage stage) throws IOException {
+
         GameRoot.setId("gameroot");
-        // scene = new Scene(g.getRoot());
-        // scene = new Scene(MainMenu.createMainMenu());
-        scene = new Scene(menuScene.getRoot());
+
+        g = new GameEngine(GameRoot);
+
+        gameScene = new Scene(g.getRoot(), sWidth, sHeight);
+
+        MainMenu menu = new MainMenu();
+        Scene mainMenuScene = menu.getScene(stage);
+
         stage.setX(500);
         stage.setY(200);
         stage.setMinWidth(sWidth);
-        stage.setMinHeight(sheight);
+        stage.setMinHeight(sHeight);
         stage.setResizable(false);
         stage.setTitle("Plane Shooting Game");
-        // stage.setScene(scene);
+
+        stage.setScene(mainMenuScene);
         stage.show();
-        System.out.println(scene.getRoot());
+        // System.out.println(scene.getRoot());
         // if(scene.getRoot().getId() == "gameroot"){
             // g.startGame(); 
         // }
@@ -39,12 +45,9 @@ public class App extends Application {
         //     System.out.println("jjjfjf");
         // }
     }
-    public static GameEngine getEngine(){
-        return g;
-    }
-    public static Scene getScene(){
-        return scene;
-    }
+    // public static GameEngine getEngine(){
+    //     return g;
+    // }
     public static void main(String[] args) {
         launch();
     }

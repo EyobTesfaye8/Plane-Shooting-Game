@@ -34,7 +34,7 @@ public class PowerupManager {
     public void removeOffscreen(double height) {
         for (Iterator<Powerup> it = powerups.iterator(); it.hasNext();){
             Powerup p = it.next();
-            if(p.y > App.sheight+100){
+            if(p.y > App.sHeight+100){
                 it.remove();
                 root.getChildren().remove(p.getSprite());
             }

@@ -25,6 +25,6 @@ abstract public sealed class Bullet extends GameObject
 
     @Override
     public boolean outOfScreenV(){
-        return y < -100 || y > App.sheight+100; 
+        return y < -100 || y > App.sHeight+100; 
     }
 }
