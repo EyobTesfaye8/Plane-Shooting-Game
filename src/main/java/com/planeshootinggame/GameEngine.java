@@ -118,13 +118,15 @@ public class GameEngine extends App{
 
     private void update(long now) {
         setInput();
-        player.update(left, right, up, down);
+        player.move(left, right, up, down);
+
         if(!canBeIntersected){
             if(now - lastImmunity >= playerImmunityInterval){
                 canBeIntersected = true;
                 lastImmunity = now;
             }
         }
+
         if(now - lastEnemySpawn >= enemySpawnInterval){
             enemies.spawnEnemy();
             lastEnemySpawn = now;
@@ -132,9 +134,9 @@ public class GameEngine extends App{
     
         if(now - lastShot >= playerShootInterval){
             if(player.isManyBullets() && player.isMegaBullet()){
-                playerBullets.addBullet(new NormalBullet(player.x+player.width/2, player.y));
-                playerBullets.addBullet(new NormalBullet(player.x+player.width/2-60, player.y));
-                playerBullets.addBullet(new NormalBullet(player.x+player.width/2+60, player.y));
+                playerBullets.addBullet(new MegaBullet(player.x+player.width/2, player.y));
+                playerBullets.addBullet(new MegaBullet(player.x+player.width/2-60, player.y));
+                playerBullets.addBullet(new MegaBullet(player.x+player.width/2+60, player.y));
             }
             else if(player.isManyBullets()){
                 playerBullets.addBullet(new NormalBullet(player.x+player.width/2, player.y));
@@ -142,6 +144,9 @@ public class GameEngine extends App{
                 playerBullets.addBullet(new NormalBullet(player.x+player.width/2+40, player.y));
                 playerBullets.addBullet(new NormalBullet(player.x+player.width/2-80, player.y));
                 playerBullets.addBullet(new NormalBullet(player.x+player.width/2+80, player.y));
+            }
+            else if (player.isMegaBullet()){
+                playerBullets.addBullet(new MegaBullet(player.x+player.width/2, player.y));
             }
             else{
                 playerBullets.addBullet(new NormalBullet(player.x+player.width/2, player.y));
@@ -221,7 +226,8 @@ public class GameEngine extends App{
                         else if(e.getClass() == DancingEnemy.class) score+=40;
 
                         else score+=30;
-                    
+                        
+                        // if(e)
                         itE.remove();
                         root.getChildren().remove(e.getSprite());
                     }

@@ -7,7 +7,6 @@ import javafx.scene.shape.Rectangle;
 // import javafx.scene.image.Image;
 
 final public class NormalEnemy extends Enemy {
-    private double powerupDropChance = 0.05; 
     Rectangle r = (Rectangle) sprite;
     // private Image normalEnemyIMG = new Image("");
     
@@ -16,6 +15,7 @@ final public class NormalEnemy extends Enemy {
         super(x,y, 60, 70);
         this.dy = 5;
         this.health = 3;
+        this.powerupDropChance = 0.05;
         r.setFill(Color.BLUE);
     }
 

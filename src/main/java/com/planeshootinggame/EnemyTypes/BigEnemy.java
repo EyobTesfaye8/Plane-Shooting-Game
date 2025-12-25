@@ -8,14 +8,14 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 final public class BigEnemy extends Enemy {
-    private double powerupDropChance = 0.20; 
     Rectangle r = (Rectangle) sprite;
     // private Image normalEnemyIMG = new Image("");
-
+    
     public BigEnemy(double x, double y){
         super(x,y, 110, 140);
         this.dy = 2;
         this.health = 30;
+        this.powerupDropChance = 0.25; 
         r.setFill(Color.MAGENTA);
     }
 

@@ -8,7 +8,6 @@ import javafx.scene.shape.Rectangle;
 import java.lang.Math;
 
 final public class DancingEnemy extends Enemy {
-    private double powerupDropChance = 0.15;
     public double nextDestination;
     Rectangle r = (Rectangle) sprite;
     // private Image normalEnemyIMG = new Image("");
@@ -19,8 +18,9 @@ final public class DancingEnemy extends Enemy {
         this.dy = 8;
         this.dx = 6;
         this.health = 5;
-        r.setFill(Color.ROYALBLUE);
+        this.powerupDropChance = 0.15; 
         this.nextDestination = x;
+        r.setFill(Color.ROYALBLUE);
     }
     
     @Override

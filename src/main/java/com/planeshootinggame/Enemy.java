@@ -11,8 +11,9 @@ abstract public sealed class Enemy extends GameObject
     protected int health;
     protected double dx;
     protected double dy;
+    protected boolean canShoot = true;
+    protected double powerupDropChance;
     private boolean isDamaged = false;
-    public boolean canShoot = true;
 
     public Enemy(double x, double y, double width, double height) {
         super(x,y, width, height);

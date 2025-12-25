@@ -16,7 +16,7 @@ public class Player extends GameObject {
         super(x,y,100,150);
         this.root = root;
         this.lives = 3;
-        this.speed = 20;
+        this.speed = 15;
         
         Rectangle r = (Rectangle) sprite;
         r.setFill(Color.RED);
@@ -28,6 +28,7 @@ public class Player extends GameObject {
     public int getLives(){return lives;}
     public void damage(){lives--;}
     public void heal(){lives++;}
+    public void speedup(){speed+=10;}
 
     @Override
     public boolean outOfScreenH(){
@@ -39,14 +40,14 @@ public class Player extends GameObject {
         return y < 0 || (y > App.sheight-height);
     }
 
-    public void update(boolean left, boolean right, boolean up, boolean down) {
+    public void move(boolean left, boolean right, boolean up, boolean down) {
         if(!outOfScreenH()){
             if(left == true) x-=speed;
             if(right == true) x+=speed;
         }
         if(!outOfScreenV()){
-            if(up == true) y-=speed;
-            if(down == true) y+=speed;
+            if(up == true) y-=(speed - 5);
+            if(down == true) y+=(speed - 5);
         }
         if(x < 0) x = 0; 
         else if(x > App.sWidth-width) x = App.sWidth-width; 

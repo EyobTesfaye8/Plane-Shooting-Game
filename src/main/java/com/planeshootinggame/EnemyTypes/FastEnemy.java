@@ -6,7 +6,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 final public class FastEnemy extends Enemy {
-    private double powerupDropChance = 0.15; 
     Rectangle r = (Rectangle) sprite;
     // private Image normalEnemyIMG = new Image("");
     
@@ -15,6 +14,7 @@ final public class FastEnemy extends Enemy {
         super(x,y, 80, 90);
         this.dy = 10;
         this.health = 2;
+        this.powerupDropChance = 0.05; 
         r.setFill(Color.TOMATO);
     }
 

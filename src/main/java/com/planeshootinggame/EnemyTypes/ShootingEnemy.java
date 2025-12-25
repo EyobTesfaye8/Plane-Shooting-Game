@@ -3,13 +3,11 @@ package com.planeshootinggame.EnemyTypes;
 import java.util.concurrent.CompletableFuture;
 
 import com.planeshootinggame.*;
-import com.planeshootinggame.BulletTypes.EnemyBullet;
 
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 final public class ShootingEnemy extends Enemy {
-    private double powerupDropChance = 0.30; 
     Rectangle r = (Rectangle) sprite;
     GameEngine g;
     // private Image normalEnemyIMG = new Image("");
@@ -19,6 +17,7 @@ final public class ShootingEnemy extends Enemy {
         super(x,y, 60, 80);
         this.dy = 5;
         this.health = 1;
+        this.powerupDropChance = 0.30;
         r.setFill(Color.YELLOWGREEN);
     }
 
