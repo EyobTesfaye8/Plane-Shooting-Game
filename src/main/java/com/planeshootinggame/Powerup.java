@@ -1,16 +1,13 @@
 package com.planeshootinggame;
+import com.planeshootinggame.PowerupTypes.*;
+abstract public sealed class Powerup extends GameObject 
+                permits ExtraLife
+{
+    protected PowerupType type;
+    protected double dy = 2;
 
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-public class Powerup extends GameObject {
-    private PowerupType type;
-    private double dy = 1.5;
-
-    public Powerup(double x, double y, PowerupType type) {
-        super(x,y,18,18);
-        this.type = type;
-        Rectangle r = (Rectangle) sprite;
-        r.setFill(Color.YELLOW);
+    public Powerup(double x, double y, double width, double height) {
+        super(x,y,width,height);
     }
 
     @Override
@@ -26,9 +23,8 @@ public class Powerup extends GameObject {
     @Override
     public void update() {
         y += dy;
+        updateSprite();
     }
 
-    public void apply(Player p) {
-
-    }
+    abstract public void apply(Player p);
 }

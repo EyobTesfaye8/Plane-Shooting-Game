@@ -1,6 +1,5 @@
 package com.planeshootinggame;
 
-import com.planeshootinggame.UI.*;
 import com.planeshootinggame.UI.screens.MainMenu;
 
 import javafx.application.Application;
@@ -35,6 +34,7 @@ public class App extends Application {
         stage.setResizable(false);
         stage.setTitle("Plane Shooting Game");
 
+        // stage.setScene(g.getGameOverScene(stage));
         stage.setScene(mainMenuScene);
         stage.show();
         // System.out.println(scene.getRoot());

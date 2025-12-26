@@ -1,9 +1,9 @@
 package com.planeshootinggame;
 
+import javafx.stage.Stage;
 import javafx.animation.AnimationTimer;
-import javafx.scene.control.Button;
+import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.Font;
@@ -11,6 +11,7 @@ import java.util.Iterator;
 import java.util.concurrent.CompletableFuture;
 
 import com.planeshootinggame.EnemyTypes.*;
+import com.planeshootinggame.UI.screens.GameOver;
 // import com.planeshootinggame.UI.MainMenu;
 import com.planeshootinggame.BulletTypes.*;
 
@@ -27,12 +28,12 @@ public class GameEngine extends App{
     private boolean left, right, up, down;
     private boolean canBeIntersected = true;
     private boolean isEnemyDamaged = false;
-    private boolean gameOver = false, gamePaused = false;
+    private boolean gameOver = true, gamePaused = false;
     private long enemySpawnInterval =       1000000000L,    lastEnemySpawn = 0;
     private long enemyShootInterval =       1000000000L,    lastEnemyShoot = 0;
     private long playerImmunityInterval =   3000000000L,    lastImmunity = 0;
     private long playerShootInterval =      150000000L,     lastShot = 0;
-
+    private GameOver gameOverScene;
     public GameEngine(Pane root) {
         this.root = root;
         playerBullets = new BulletManager(root);
@@ -53,13 +54,15 @@ public class GameEngine extends App{
         gameOver =! gameOver;
     }
 
-    public void startGame() {
+    public void startGame(Stage stage) {
         init_player();
        timer = new AnimationTimer() {
             @Override
             public void handle(long now){
                 if (gameOver) {
                     timer.stop(); 
+                    // reset movement
+                    left = right = up = down = false;
                     // reset enemies
                     for (Iterator<Enemy> it = enemies.getEnemies().iterator();it.hasNext();) {
                         Enemy e = it.next();
@@ -72,29 +75,30 @@ public class GameEngine extends App{
                         root.getChildren().remove(b.getSprite());
                     }
                     playerBullets.getBullets().clear();
+                    //reset enemyBullets
+                    for (Iterator<Bullet> it = enemyBullets.getBullets().iterator();it.hasNext();) {
+                        Bullet b = it.next();
+                        root.getChildren().remove(b.getSprite());
+                    }
                     //reset powerups
+                    for (Iterator<Powerup> it = powerups.getPowerups().iterator();it.hasNext();) {
+                        Powerup p = it.next();
+                        root.getChildren().remove(p.getSprite());
+                    }
 
-                    // StackPane menu = new StackPane();
-                    // Button btnOK = new Button("start over");
-                    // btnOK.setPrefSize(300, 50);
-                    // menu.getChildren().add(btnOK);
-                    // btnOK.setFont(Font.font("arial", FontWeight.BOLD, 30));
-                    // App.scene.setRoot(menu);
-                    // btnOK.setOnMouseClicked(e -> {System.out.println("hello");});
-                    // btnOK.setOnAction(e -> {
-                    //     gameOver = false;
-                    //     score = 0;
-                    //     App.scene.setRoot(root);
-                    //     init_player();
-                    //     timer.start();
-                    // });
-                    // App.scene.setRoot(MainMenu.createMainMenu());
+                    
+                    gameOverScene = new GameOver();
+                    stage.setScene(getGameOverScene(stage));
                     return;
                 }
-            update(now);
+                update(now);
             }
         };
     timer.start();
+    }
+
+    public Scene getGameOverScene(Stage stage){
+        return gameOverScene.getScene(stage, score);
     }
 
     public void setInput(){
@@ -188,6 +192,7 @@ public class GameEngine extends App{
             }
         }
         
+        System.out.println(player.getLives());
         checkCollisions();
         removeOffscreen();
     }
@@ -227,7 +232,7 @@ public class GameEngine extends App{
 
                         else score+=30;
                         
-                        // if(e)
+                        powerups.spawnPowerup(e.x, e.y);
                         itE.remove();
                         root.getChildren().remove(e.getSprite());
                     }
@@ -243,7 +248,6 @@ public class GameEngine extends App{
             if(player.intersects(b) && canBeIntersected){
                 itB.remove();
                 root.getChildren().remove(b.getSprite());
-                System.out.println("damaged");
                 player.damage();
                 canBeIntersected = false;
                 if(player.getLives() <= 0){
@@ -252,6 +256,15 @@ public class GameEngine extends App{
                     scoreText.setText("Score: "+score);
                     gameOver = true;
                 }
+            }
+        }
+        // player vs powerups
+        for(Iterator<Powerup> it = powerups.getPowerups().iterator(); it.hasNext();){
+            Powerup p = it.next();
+            if (player.intersects(p)){
+                it.remove();
+                root.getChildren().remove(p.getSprite());
+                p.apply(player);
             }
         }
 

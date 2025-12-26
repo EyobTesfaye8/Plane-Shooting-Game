@@ -4,8 +4,11 @@ import com.planeshootinggame.*;
 
 import javafx.scene.shape.Rectangle;
 import javafx.scene.paint.Color;
+import javafx.scene.image.ImageView;
 
 final public class EnemyBullet extends Bullet{
+    // ImageView enemyBulletIMG = new ImageView("../../../../../Assets/bullets/EnemyBullet");
+    
     Rectangle r = (Rectangle) sprite;
 
     public EnemyBullet(double x, double y, double dy){

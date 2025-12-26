@@ -1,13 +1,11 @@
 package com.planeshootinggame.UI.screens;
 
 import com.planeshootinggame.App;
-import com.planeshootinggame.GameEngine;
 
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.Button;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.geometry.Pos;
 
@@ -30,12 +28,13 @@ public class MainMenu {
         VBox layout = new VBox(20, title, play, settings, exit);
         layout.setAlignment(Pos.CENTER);
 
-        Scene scene = new Scene(layout, 800, 600);
+        Scene scene = new Scene(layout, App.sWidth,App.sHeight);
         scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
 
         play.setOnAction(e -> {
             stage.setScene(App.gameScene);
-            App.g.startGame();
+            App.g.changeGameOverStatus();
+            App.g.startGame(stage);
         });
 
         return scene;
