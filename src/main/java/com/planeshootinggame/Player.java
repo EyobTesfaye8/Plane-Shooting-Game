@@ -22,7 +22,6 @@ public class Player extends GameObject {
         sprite = new ImageView(App.assets.healPowerupIMG);
         sprite.setFitHeight(height);
         sprite.setFitWidth(width);
-        // r.setFill(Color.RED);
         root.getChildren().add(sprite);
     }
 

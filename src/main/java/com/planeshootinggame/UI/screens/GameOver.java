@@ -22,15 +22,13 @@ public class GameOver {
         Button menu = new Button("Main Menu");
 
         retry.setOnAction(e -> {
-            stage.setScene(App.gameScene);
-            App.g.changeGameOverStatus();
-            App.g.startGame(stage);
+            App.showGame();
+            App.g.turnONGame();
+            App.g.startGame();
         });
         
         menu.setOnAction(e -> {
-            MainMenu menuMain = new MainMenu();
-            Scene menuScene = menuMain.getScene(stage);
-            stage.setScene(menuScene);
+            App.showMenu();
         });
         
         retry.getStyleClass().add("menu-button");

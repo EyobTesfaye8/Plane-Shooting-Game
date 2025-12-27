@@ -22,6 +22,7 @@ public abstract class GameObject {
     public abstract boolean outOfScreenH();
     public abstract boolean outOfScreenV();
     public abstract void update();
+    public boolean isNull(){return this.sprite != null;}
 
     public boolean intersects(GameObject other) {
         return this.x < other.x + other.width &&

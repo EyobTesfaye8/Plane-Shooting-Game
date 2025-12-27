@@ -1,4 +1,4 @@
-package com.planeshootinggame.UI.components;
+package com.planeshootinggame.UI.overlays;
 
 import javafx.scene.control.Label;
 
@@ -25,7 +25,12 @@ public class HUD {
 
     public static void togglePause() {
         paused = !paused;
-        // pauseLabel.setVisible(paused);
+    }
+    public static void pause() {
+        paused = true;
+    }
+    public static void resume() {
+        paused = false;
     }
 
     public static boolean isPaused() {
