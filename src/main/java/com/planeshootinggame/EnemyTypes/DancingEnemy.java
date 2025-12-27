@@ -3,13 +3,14 @@ package com.planeshootinggame.EnemyTypes;
 import com.planeshootinggame.App;
 import com.planeshootinggame.Enemy;
 
+import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import java.lang.Math;
 
 final public class DancingEnemy extends Enemy {
     public double nextDestination;
-    Rectangle r = (Rectangle) sprite;
+    // Rectangle r = (Rectangle) sprite;
     // private Image normalEnemyIMG = new Image("");
     
     
@@ -20,7 +21,10 @@ final public class DancingEnemy extends Enemy {
         this.health = 5;
         this.powerupDropChance = 0.15; 
         this.nextDestination = x;
-        r.setFill(Color.ROYALBLUE);
+        // r.setFill(Color.ROYALBLUE);
+        this.sprite = new ImageView(App.assets.normalBulletIMG);
+        sprite.setFitWidth(width);
+        sprite.setFitHeight(height);
     }
     
     @Override
@@ -47,9 +51,9 @@ final public class DancingEnemy extends Enemy {
 
     @Override
     public void changeImage(){
-        if(this.isDamaged())
-            r.setFill(Color.BLACK);
-        else
-            r.setFill(Color.ROYALBLUE);
+        // if(this.isDamaged())
+        //     r.setFill(Color.BLACK);
+        // else
+        //     r.setFill(Color.ROYALBLUE);
     }
 }

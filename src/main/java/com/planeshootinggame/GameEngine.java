@@ -11,7 +11,9 @@ import java.util.Iterator;
 import java.util.concurrent.CompletableFuture;
 
 import com.planeshootinggame.EnemyTypes.*;
+import com.planeshootinggame.UI.components.HUD;
 import com.planeshootinggame.UI.screens.GameOver;
+import com.planeshootinggame.UI.screens.GamePause;
 // import com.planeshootinggame.UI.MainMenu;
 import com.planeshootinggame.BulletTypes.*;
 
@@ -29,11 +31,13 @@ public class GameEngine extends App{
     private boolean canBeIntersected = true;
     private boolean isEnemyDamaged = false;
     private boolean gameOver = true, gamePaused = false;
-    private long enemySpawnInterval =       1000000000L,    lastEnemySpawn = 0;
+    private long enemySpawnInterval =       5000000000L,    lastEnemySpawn = 0;
     private long enemyShootInterval =       1000000000L,    lastEnemyShoot = 0;
     private long playerImmunityInterval =   3000000000L,    lastImmunity = 0;
     private long playerShootInterval =      150000000L,     lastShot = 0;
     private GameOver gameOverScene;
+    // private Pane gamePausedRoot = new GamePaused().getView();
+
     public GameEngine(Pane root) {
         this.root = root;
         playerBullets = new BulletManager(root);
@@ -43,6 +47,8 @@ public class GameEngine extends App{
         scoreText = new Text(100, 200, "Score: "+score);
         scoreText.setFont(Font.font("arial", FontWeight.BOLD, 30));
         root.getChildren().add(scoreText);
+        pauseMenu = new GamePause();
+        gameLayer.getChildren().add(pauseMenu);
     }
 
     void init_player(){
@@ -56,45 +62,69 @@ public class GameEngine extends App{
 
     public void startGame(Stage stage) {
         init_player();
+        if(gamePaused) HUD.togglePause();
        timer = new AnimationTimer() {
             @Override
             public void handle(long now){
                 if (gameOver) {
                     timer.stop(); 
-                    // reset movement
+                    // reset everything
                     left = right = up = down = false;
-                    // reset enemies
                     for (Iterator<Enemy> it = enemies.getEnemies().iterator();it.hasNext();) {
                         Enemy e = it.next();
                         root.getChildren().remove(e.getSprite());
                     }
-                    enemies.getEnemies().clear();
-                    //reset playerBullets
                     for (Iterator<Bullet> it = playerBullets.getBullets().iterator();it.hasNext();) {
                         Bullet b = it.next();
                         root.getChildren().remove(b.getSprite());
                     }
-                    playerBullets.getBullets().clear();
-                    //reset enemyBullets
                     for (Iterator<Bullet> it = enemyBullets.getBullets().iterator();it.hasNext();) {
                         Bullet b = it.next();
                         root.getChildren().remove(b.getSprite());
                     }
-                    //reset powerups
                     for (Iterator<Powerup> it = powerups.getPowerups().iterator();it.hasNext();) {
                         Powerup p = it.next();
                         root.getChildren().remove(p.getSprite());
                     }
+                    enemies.getEnemies().clear();
+                    playerBullets.getBullets().clear();
+                    enemyBullets.getBullets().clear();
+                    powerups.getPowerups().clear();
 
-                    
                     gameOverScene = new GameOver();
                     stage.setScene(getGameOverScene(stage));
                     return;
                 }
+                else if(gamePaused){
+                    // timer.stop();
+                    // stage.setScene(new Scene(pauseMenu));
+                    left = right = up = down = false;
+                    pauseMenu.show();
+                    // return;
+                    // gamePausedLayout = new GamePaused();
+                    // Pane game = gamePausedLayout.getView();
+                    // Scene scene = new scene(pauseMenu);
+                }
+                // System.out.println(gamePaused);
                 update(now);
             }
         };
     timer.start();
+    // pauseMenu.setOnResume(() -> {
+    //     pauseMenu.hide();
+    //     HUD.togglePause();
+    // });
+
+    // pauseMenu.setOnRestart(() -> {
+    //     gameOver = false;
+    //     score = 0;
+    //     startGame(stage);
+    // });
+
+    // pauseMenu.setOnQuit(() -> {
+    //     stage.setScene(App.menu.getScene(stage));
+    // });
+
     }
 
     public Scene getGameOverScene(Stage stage){
@@ -116,53 +146,56 @@ public class GameEngine extends App{
                 case RIGHT -> right = false;
                 case UP -> up = false;
                 case DOWN -> down = false;
+                // case ESCAPE -> HUD.togglePause();
             }
         });
     }
 
     private void update(long now) {
         setInput();
+        gamePaused = HUD.isPaused();
         player.move(left, right, up, down);
-
-        if(!canBeIntersected){
-            if(now - lastImmunity >= playerImmunityInterval){
-                canBeIntersected = true;
-                lastImmunity = now;
-            }
-        }
-
-        if(now - lastEnemySpawn >= enemySpawnInterval){
-            enemies.spawnEnemy();
-            lastEnemySpawn = now;
-        }
-    
-        if(now - lastShot >= playerShootInterval){
-            if(player.isManyBullets() && player.isMegaBullet()){
-                playerBullets.addBullet(new MegaBullet(player.x+player.width/2, player.y));
-                playerBullets.addBullet(new MegaBullet(player.x+player.width/2-60, player.y));
-                playerBullets.addBullet(new MegaBullet(player.x+player.width/2+60, player.y));
-            }
-            else if(player.isManyBullets()){
-                playerBullets.addBullet(new NormalBullet(player.x+player.width/2, player.y));
-                playerBullets.addBullet(new NormalBullet(player.x+player.width/2-40, player.y));
-                playerBullets.addBullet(new NormalBullet(player.x+player.width/2+40, player.y));
-                playerBullets.addBullet(new NormalBullet(player.x+player.width/2-80, player.y));
-                playerBullets.addBullet(new NormalBullet(player.x+player.width/2+80, player.y));
-            }
-            else if (player.isMegaBullet()){
-                playerBullets.addBullet(new MegaBullet(player.x+player.width/2, player.y));
-            }
-            else{
-                playerBullets.addBullet(new NormalBullet(player.x+player.width/2, player.y));
-            }
-            lastShot = now;
-        }
         
-        enemies.update();
-        player.update();
-        playerBullets.update();
-        enemyBullets.update();
-        powerups.update();
+        if(!gamePaused){
+            if(!canBeIntersected){
+                if(now - lastImmunity >= playerImmunityInterval){
+                    canBeIntersected = true;
+                    lastImmunity = now;
+                }
+            }
+
+            if(now - lastEnemySpawn >= enemySpawnInterval){
+                enemies.spawnEnemy();
+                lastEnemySpawn = now;
+            }
+        
+            if(now - lastShot >= playerShootInterval){
+                if(player.isManyBullets() && player.isMegaBullet()){
+                    playerBullets.addBullet(new MegaBullet(player.x+player.width/2, player.y));
+                    playerBullets.addBullet(new MegaBullet(player.x+player.width/2-60, player.y));
+                    playerBullets.addBullet(new MegaBullet(player.x+player.width/2+60, player.y));
+                }
+                else if(player.isManyBullets()){
+                    playerBullets.addBullet(new NormalBullet(player.x+player.width/2, player.y));
+                    playerBullets.addBullet(new NormalBullet(player.x+player.width/2-40, player.y));
+                    playerBullets.addBullet(new NormalBullet(player.x+player.width/2+40, player.y));
+                    playerBullets.addBullet(new NormalBullet(player.x+player.width/2-80, player.y));
+                    playerBullets.addBullet(new NormalBullet(player.x+player.width/2+80, player.y));
+                }
+                else if (player.isMegaBullet()){
+                    playerBullets.addBullet(new MegaBullet(player.x+player.width/2, player.y));
+                }
+                else{
+                    playerBullets.addBullet(new NormalBullet(player.x+player.width/2, player.y));
+                }
+                lastShot = now;
+            }
+            enemies.update();
+            player.update();
+            playerBullets.update();
+            enemyBullets.update();
+            powerups.update();
+        }
         
         for(Iterator<Enemy> it = enemies.getEnemies().iterator(); it.hasNext();){
             Enemy e = it.next();
@@ -192,7 +225,7 @@ public class GameEngine extends App{
             }
         }
         
-        System.out.println(player.getLives());
+        // System.out.println(player.getLives());
         checkCollisions();
         removeOffscreen();
     }

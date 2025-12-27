@@ -34,6 +34,7 @@ public class MainMenu {
         play.setOnAction(e -> {
             stage.setScene(App.gameScene);
             App.g.changeGameOverStatus();
+            App.createHUD();
             App.g.startGame(stage);
         });
 

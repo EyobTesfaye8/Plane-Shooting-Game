@@ -1,5 +1,6 @@
 package com.planeshootinggame;
 
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -18,9 +19,11 @@ public class Player extends GameObject {
         this.lives = 3;
         this.speed = 15;
         
-        Rectangle r = (Rectangle) sprite;
-        r.setFill(Color.RED);
-        root.getChildren().add(r);
+        sprite = new ImageView(App.assets.healPowerupIMG);
+        sprite.setFitHeight(height);
+        sprite.setFitWidth(width);
+        // r.setFill(Color.RED);
+        root.getChildren().add(sprite);
     }
 
     public boolean isManyBullets(){return isManyBullets;}

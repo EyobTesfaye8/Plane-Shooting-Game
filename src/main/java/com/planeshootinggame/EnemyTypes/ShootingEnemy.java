@@ -4,11 +4,12 @@ import java.util.concurrent.CompletableFuture;
 
 import com.planeshootinggame.*;
 
+import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 final public class ShootingEnemy extends Enemy {
-    Rectangle r = (Rectangle) sprite;
+    // Rectangle r = (Rectangle) sprite;
     GameEngine g;
     // private Image normalEnemyIMG = new Image("");
     
@@ -18,7 +19,10 @@ final public class ShootingEnemy extends Enemy {
         this.dy = 5;
         this.health = 1;
         this.powerupDropChance = 0.30;
-        r.setFill(Color.YELLOWGREEN);
+        // r.setFill(Color.YELLOWGREEN);
+        this.sprite = new ImageView(App.assets.normalBulletIMG);
+        sprite.setFitWidth(width);
+        sprite.setFitHeight(height);
     }
 
     @Override
@@ -41,9 +45,9 @@ final public class ShootingEnemy extends Enemy {
 
     @Override
     public void changeImage(){
-        if(this.isDamaged())
-            r.setFill(Color.BLACK);
-        else
-            r.setFill(Color.YELLOWGREEN);
+        // if(this.isDamaged())
+        //     r.setFill(Color.BLACK);
+        // else
+        //     r.setFill(Color.YELLOWGREEN);
     }
 }

@@ -22,21 +22,21 @@ public class EnemyManager {
     public void spawnEnemy() {
         double randomNUM = r.nextDouble()*1000;
         Enemy enemy;
-        if(randomNUM > 600){
-            enemy = new NormalEnemy(r.nextInt(App.sWidth-100), -300);
-        }
-        else if (randomNUM > 300){
-            enemy = new FastEnemy(r.nextInt(App.sWidth-100), -300);
-        }
-        else if (randomNUM > 200){
+        // if(randomNUM > 600){
+        //     enemy = new NormalEnemy(r.nextInt(App.sWidth-100), -300);
+        // }
+        // else if (randomNUM > 300){
+        //     enemy = new FastEnemy(r.nextInt(App.sWidth-100), -300);
+        // }
+        // else if (randomNUM > 200){
             enemy = new BigEnemy(r.nextInt(App.sWidth-100), -300);
-        }
-        else if (randomNUM > 150){
-            enemy = new ShootingEnemy(r.nextInt(App.sWidth-100), -300);
-        }
-        else{
-            enemy = new DancingEnemy(r.nextInt(App.sWidth-100), -300);
-        }
+        // }
+        // else if (randomNUM > 150){
+        //     enemy = new ShootingEnemy(r.nextInt(App.sWidth-100), -300);
+        // }
+        // else{
+        //     enemy = new DancingEnemy(r.nextInt(App.sWidth-100), -300);
+        // }
         root.getChildren().add(enemy.sprite);
         enemies.add(enemy);
     }

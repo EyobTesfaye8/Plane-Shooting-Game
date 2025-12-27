@@ -1,15 +1,15 @@
 package com.planeshootinggame;
 
 import javafx.scene.Node;
+import javafx.scene.image.ImageView;
 import javafx.scene.shape.Rectangle;
 
 public abstract class GameObject {
+    protected ImageView sprite;
     protected double x, y, width, height;
-    protected Node sprite;
 
     public GameObject(double x, double y, double width, double height) {
         this.x = x; this.y = y; this.width = width; this.height = height;
-        sprite = new Rectangle(width, height);
     }
 
     protected void updateSprite(){
@@ -17,7 +17,7 @@ public abstract class GameObject {
         sprite.setTranslateY(y);
     }
 
-    public Node getSprite(){return sprite;}
+    public ImageView getSprite(){return sprite;}
 
     public abstract boolean outOfScreenH();
     public abstract boolean outOfScreenV();
