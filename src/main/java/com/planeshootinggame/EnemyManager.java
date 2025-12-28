@@ -29,22 +29,22 @@ public class EnemyManager {
         //     enemy = new FastEnemy(r.nextInt(App.sWidth-100), -300);
         // }
         // else if (randomNUM > 200){
-            enemy = new BigEnemy(r.nextInt(App.sWidth-100), -300);
+            // enemy = new BigEnemy(r.nextInt(App.sWidth-100), -300);
         // }
         // else if (randomNUM > 150){
-        //     enemy = new ShootingEnemy(r.nextInt(App.sWidth-100), -300);
+            enemy = new ShootingEnemy(r.nextInt(App.sWidth-100), -300);
         // }
         // else{
-        //     enemy = new DancingEnemy(r.nextInt(App.sWidth-100), -300);
+            // enemy = new DancingEnemy(r.nextInt(App.sWidth-100), -300);
         // }
         root.getChildren().add(enemy.sprite);
         enemies.add(enemy);
     }
 
-    public void update() {
+    public void update(long now) {
         for (Enemy e : enemies) {
             e.update();
-            e.changeImage();
+            e.changeImage(now);
             // e.attack();
         }
         // removeOffscreen();

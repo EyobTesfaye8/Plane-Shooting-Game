@@ -31,13 +31,13 @@ public class GameEngine extends App{
     private int score = 0;
     private boolean timerRunning = false;
     private boolean left, right, up, down;
-    private boolean canBeIntersected = true;
+    // private boolean canBeIntersected = true;
     private boolean isEnemyDamaged = false;
     private boolean gameOver, gamePaused;
-    private long enemySpawnInterval =       5000000000L,    lastEnemySpawn = 0;
+    private long enemySpawnInterval =       2000000000L,    lastEnemySpawn = 0;
     private long enemyShootInterval =       1000000000L,    lastEnemyShoot = 0;
     private long playerImmunityInterval =   3000000000L,    lastImmunity = 0;
-    private long playerShootInterval =      150000000L,     lastShot = 0;
+    private long playerShootInterval =      1500000000L,     lastShot = 0;
     private GameOver gameOverScene;
     // private Pane gamePausedRoot = new GamePaused().getView();
 
@@ -65,18 +65,15 @@ public class GameEngine extends App{
         timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
-
                 if (gameOver) {
-                    stopGame();     // ✅ stop timer properly
+                    stopGame();
                     reset();
                     showGameOver();
                     return;
                 }
-
                 if (gamePaused) {
                     left = right = up = down = false;
                 }
-                // System.out.println("tick " + this);
                 update(now);
             }
         };
@@ -155,7 +152,7 @@ public class GameEngine extends App{
                 case DOWN -> down = false;
                 case ESCAPE -> {
                     HUD.togglePause();
-                    pauseMenu.show();
+                        pauseMenu.show();
                 }
             }
         });
@@ -164,13 +161,12 @@ public class GameEngine extends App{
     private void update(long now) {
         setInput();
         gamePaused = HUD.isPaused();
-        player.move(left, right, up, down);
-        System.out.println(gamePaused);
+        player.move(left, right, up, down, now);
         if(!gamePaused){
             pauseMenu.hide();
-            if(!canBeIntersected){
+            if(!player.canBeIntersected()){
                 if(now - lastImmunity >= playerImmunityInterval){
-                    canBeIntersected = true;
+                    player.canBeIntersectedToggle();
                     lastImmunity = now;
                 }
             }
@@ -181,19 +177,7 @@ public class GameEngine extends App{
             }
         
             if(now - lastShot >= playerShootInterval){
-                if(player.isManyBullets() && player.isMegaBullet()){
-                    playerBullets.addBullet(new MegaBullet(player.x+player.width/2, player.y));
-                    playerBullets.addBullet(new MegaBullet(player.x+player.width/2-60, player.y));
-                    playerBullets.addBullet(new MegaBullet(player.x+player.width/2+60, player.y));
-                }
-                else if(player.isManyBullets()){
-                    playerBullets.addBullet(new NormalBullet(player.x+player.width/2, player.y));
-                    playerBullets.addBullet(new NormalBullet(player.x+player.width/2-40, player.y));
-                    playerBullets.addBullet(new NormalBullet(player.x+player.width/2+40, player.y));
-                    playerBullets.addBullet(new NormalBullet(player.x+player.width/2-80, player.y));
-                    playerBullets.addBullet(new NormalBullet(player.x+player.width/2+80, player.y));
-                }
-                else if (player.isMegaBullet()){
+                if (player.isMegaBullet()){
                     playerBullets.addBullet(new MegaBullet(player.x+player.width/2, player.y));
                 }
                 else{
@@ -201,7 +185,7 @@ public class GameEngine extends App{
                 }
                 lastShot = now;
             }
-            enemies.update();
+            enemies.update(now);
             player.update();
             playerBullets.update();
             enemyBullets.update();
@@ -245,11 +229,11 @@ public class GameEngine extends App{
         // player vs enemy
         for(Iterator<Enemy> it = enemies.getEnemies().iterator();it.hasNext();){
             Enemy e = it.next();
-            if(player.intersects(e) && canBeIntersected){
+            if(player.intersects(e) && player.canBeIntersected()){
                 it.remove();
                 root.getChildren().remove(e.getSprite());
                 player.damage();
-                canBeIntersected = false;
+                player.canBeIntersectedToggle();
                 if(player.getLives() <= 0){
                     // reset();
                     // root.getChildren().remove(player.getSprite());
@@ -290,11 +274,11 @@ public class GameEngine extends App{
         // player vs enemy bullets
         for(Iterator<Bullet> itB = enemyBullets.getBullets().iterator();itB.hasNext();){
             Bullet b = itB.next();
-            if(player.intersects(b) && canBeIntersected){
+            if(player.intersects(b) && player.canBeIntersected()){
                 itB.remove();
                 root.getChildren().remove(b.getSprite());
                 player.damage();
-                canBeIntersected = false;
+                player.canBeIntersectedToggle();
                 if(player.getLives() <= 0){
                     root.getChildren().remove(player.sprite);
                     score = 0;

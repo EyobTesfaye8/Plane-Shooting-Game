@@ -8,9 +8,6 @@ import javafx.scene.shape.Rectangle;
 // import javafx.scene.image.Image;
 
 final public class NormalEnemy extends Enemy {
-    // Rectangle r = (Rectangle) sprite;
-    // private Image normalEnemyIMG = new Image("");
-    
 
     public NormalEnemy(double x, double y){
         super(x,y, 60, 70);
@@ -18,7 +15,7 @@ final public class NormalEnemy extends Enemy {
         this.health = 3;
         this.powerupDropChance = 0.05;
         // r.setFill(Color.BLUE);
-        this.sprite = new ImageView(App.assets.normalBulletIMG);
+        this.sprite = new ImageView(App.assets.meleeEnemyIMGs[frameIndex]);
         sprite.setFitWidth(width);
         sprite.setFitHeight(height);
     }
@@ -35,7 +32,7 @@ final public class NormalEnemy extends Enemy {
     }
 
     @Override
-    public void changeImage(){
+    public void changeImage(long now){
         // if(this.isDamaged())
         //     r.setFill(Color.BLACK);
         // else

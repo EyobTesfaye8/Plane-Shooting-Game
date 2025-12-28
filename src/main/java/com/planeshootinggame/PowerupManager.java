@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
-import com.planeshootinggame.PowerupTypes.ExtraLife;
+import com.planeshootinggame.PowerupTypes.*;
 
 public class PowerupManager {
     private List<Powerup> powerups = new ArrayList<>();
@@ -17,14 +17,14 @@ public class PowerupManager {
     public PowerupManager(Pane root) { this.root = root; }
 
     public void spawnPowerup(double x, double y) {
-       double randomNUM = r.nextDouble()*1000;
+       double randomNUM = r.nextDouble()*200; //1000
        boolean spawned = false;
        if(randomNUM < 200) spawned = true;
        if(spawned){
            Powerup p;
            // if(randomNUM > 600){
                // p = new ExtraLife(x, y, PowerupType.values()[r.nextInt(PowerupType.values().length)]);
-               p = new ExtraLife(x, y, PowerupType.EXTRA_LIFE);
+               p = new Mega(x, y);
            // }
            // else if (randomNUM > 300){
            //     enemy = new FastEnemy(r.nextInt(App.sWidth-100), -300);

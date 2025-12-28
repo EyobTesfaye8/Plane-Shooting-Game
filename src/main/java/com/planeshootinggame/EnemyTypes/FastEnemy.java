@@ -35,7 +35,7 @@ final public class FastEnemy extends Enemy {
     }
 
     @Override
-    public void changeImage(){
+    public void changeImage(long now){
         // if(this.isDamaged())
         //     r.setFill(Color.BLACK);
         // else

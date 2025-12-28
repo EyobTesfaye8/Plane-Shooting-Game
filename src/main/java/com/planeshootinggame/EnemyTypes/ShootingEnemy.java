@@ -10,17 +10,16 @@ import javafx.scene.shape.Rectangle;
 
 final public class ShootingEnemy extends Enemy {
     // Rectangle r = (Rectangle) sprite;
-    GameEngine g;
+    // GameEngine g;
     // private Image normalEnemyIMG = new Image("");
     
 
     public ShootingEnemy(double x, double y){
-        super(x,y, 60, 80);
-        this.dy = 5;
-        this.health = 1;
-        this.powerupDropChance = 0.30;
-        // r.setFill(Color.YELLOWGREEN);
-        this.sprite = new ImageView(App.assets.normalBulletIMG);
+        super(x,y, 100, 90);
+        this.dy = 2;
+        this.health = 10;
+        this.sprite = new ImageView(App.assets.shootingEnemyIMGs[frameIndex]);
+        sprite.setRotate(90);
         sprite.setFitWidth(width);
         sprite.setFitHeight(height);
     }
@@ -44,10 +43,13 @@ final public class ShootingEnemy extends Enemy {
     }
 
     @Override
-    public void changeImage(){
-        // if(this.isDamaged())
-        //     r.setFill(Color.BLACK);
-        // else
-        //     r.setFill(Color.YELLOWGREEN);
+    public void changeImage(long now){
+        if(this.isDamaged()) sprite.setImage(App.assets.shootingEnemyHurtIMG);
+
+        else if (now - lastFrame >= frameChangeInterval){
+            frameIndex = (++frameIndex) % App.assets.shootingEnemyIMGs.length;
+            sprite.setImage(App.assets.shootingEnemyIMGs[frameIndex]);
+            lastFrame = now;
+        }
     }
 }

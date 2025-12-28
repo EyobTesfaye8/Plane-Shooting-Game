@@ -10,7 +10,7 @@ final public class EnemyBullet extends Bullet{
     // Rectangle r = (Rectangle) sprite;
 
     public EnemyBullet(double x, double y, double dy){
-        super(x, y, 100, 400);
+        super(x, y, 70, 80);
         this.dy = dy;
         this.bulletPower = 1;
         this.sprite = new ImageView(App.assets.enemyBulletIMG);

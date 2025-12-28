@@ -1,31 +1,28 @@
 package com.planeshootinggame.EnemyTypes;
 
-import java.util.concurrent.CompletableFuture;
-
 import com.planeshootinggame.App;
 import com.planeshootinggame.Enemy;
 
+import java.util.concurrent.CompletableFuture;
 import javafx.scene.image.ImageView;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 
 final public class BigEnemy extends Enemy {
-    // Rectangle r = (Rectangle) sprite;
-    // private Image normalEnemyIMG = new Image("");
     
     public BigEnemy(double x, double y){
-        super(x,y, 110, 140);
+        super(x,y, 130, 120);
         this.dy = 2;
         this.health = 30;
         this.powerupDropChance = 0.25; 
         // r.setFill(Color.MAGENTA);
-        this.sprite = new ImageView(App.assets.normalBulletIMG);
+        this.sprite = new ImageView(App.assets.shootingEnemyIMGs[frameIndex]);
+        sprite.setRotate(90);
         sprite.setFitWidth(width);
         sprite.setFitHeight(height);
     }
 
     @Override
     public void update() {
+        
         y += dy;
         updateSprite();
     }
@@ -43,10 +40,13 @@ final public class BigEnemy extends Enemy {
     }
 
     @Override
-    public void changeImage(){
-        // if(this.isDamaged())
-        //     r.setFill(Color.BLACK);
-        // else
-        //     r.setFill(Color.MAGENTA);
+    public void changeImage(long now){
+        if(this.isDamaged()) sprite.setImage(App.assets.shootingEnemyHurtIMG);
+
+        else if (now - lastFrame >= frameChangeInterval){
+            frameIndex = (++frameIndex) % App.assets.shootingEnemyIMGs.length;
+            sprite.setImage(App.assets.shootingEnemyIMGs[frameIndex]);
+            lastFrame = now;
+        }
     }
 }

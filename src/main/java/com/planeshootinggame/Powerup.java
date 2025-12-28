@@ -1,9 +1,11 @@
 package com.planeshootinggame;
 import com.planeshootinggame.PowerupTypes.*;
 abstract public sealed class Powerup extends GameObject 
-                permits ExtraLife
+                permits ExtraLife,
+                        Mega,
+                        Shield,
+                        Speedup
 {
-    protected PowerupType type;
     protected double dy = 2;
 
     public Powerup(double x, double y, double width, double height) {

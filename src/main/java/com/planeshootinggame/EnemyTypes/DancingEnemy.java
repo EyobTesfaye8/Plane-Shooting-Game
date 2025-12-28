@@ -50,7 +50,7 @@ final public class DancingEnemy extends Enemy {
     }
 
     @Override
-    public void changeImage(){
+    public void changeImage(long now){
         // if(this.isDamaged())
         //     r.setFill(Color.BLACK);
         // else
