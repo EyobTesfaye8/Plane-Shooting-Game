@@ -1,32 +1,47 @@
 package com.planeshootinggame.UI.screens;
 
-import javafx.stage.Stage;
-import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.Button;
-import javafx.scene.layout.VBox;
+import com.planeshootinggame.App;
+
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Slider;
-import javafx.scene.control.CheckBox;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
+import javafx.stage.Stage;
 
 public class Settings {
-
-    public Scene getScene(Stage stage) {
+    public Scene createSettingsScene(Stage stage) {
         Label title = new Label("Settings");
         title.getStyleClass().add("title");
 
-        CheckBox sound = new CheckBox("Sound");
-        sound.getStyleClass().add("label-text");
+        // Volume
+        Label muteLabel = new Label("Mute Audio");
+        muteLabel.getStyleClass().add("label-text");
 
-        Slider volume = new Slider(0, 100, 50);
+        CheckBox muteCheckBox = new CheckBox();
+        if (App.assets.mute) muteCheckBox.setSelected(true);
+        muteCheckBox.setOnAction(e -> {
+            App.assets.mute = muteCheckBox.isSelected();
+        });
 
-        Button back = new Button("Back");
-        back.getStyleClass().add("menu-button");
+        HBox muteBox = new HBox(15, muteLabel, muteCheckBox);
+        muteBox.setAlignment(Pos.CENTER);
 
-        VBox layout = new VBox(20, title, sound, volume, back);
+        // Back button
+        Button backButton = new Button("Back");
+        backButton.getStyleClass().add("menu-button");
+        backButton.setOnAction(e -> {
+                App.showMenu();
+                if(!App.assets.mute) App.assets.click.play();
+        });
+
+        // Layout
+        VBox layout = new VBox(30, title, muteBox, backButton);
         layout.setAlignment(Pos.CENTER);
+        layout.setPadding(new Insets(40));
+        layout.getStyleClass().add("root");
 
-        Scene scene = new Scene(layout, 800, 600);
+        Scene scene = new Scene(layout, App.sWidth, App.sHeight);
         scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
         return scene;
     }

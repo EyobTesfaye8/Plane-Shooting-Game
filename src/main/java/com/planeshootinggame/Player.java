@@ -2,6 +2,7 @@ package com.planeshootinggame;
 
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
@@ -13,19 +14,26 @@ public class Player extends GameObject {
     private boolean canBeIntersected = true;
     private int frameIndex = 0;
     private long lastFrame = 0;
-    private long frameChangeInterval = 1000_000_000L;
+    private long frameChangeInterval = 10_000_000L;
+    private ImageView shield; 
+    private StackPane completPlayer;
+    private boolean moving = false;
     // private boolean manyBullets = true;
 
     public Player(double x, double y, Pane root) {
         super(x,y,100,150);
         this.root = root;
         this.lives = 3;
-        this.speed = 15;
-        
+        this.speed = 6;
+        shield =  new ImageView(App.assets.playerShield);
+        shield.setFitHeight(height+10);
+        shield.setFitWidth(width+10);
+        shield.setVisible(false);
         sprite = new ImageView(App.assets.playerIMGS[frameIndex]);
         sprite.setFitHeight(height);
         sprite.setFitWidth(width);
-        root.getChildren().add(sprite);
+        completPlayer = new StackPane(sprite, shield);
+        root.getChildren().add(completPlayer);
     }
 
     public int getLives(){return lives;}
@@ -49,21 +57,32 @@ public class Player extends GameObject {
         return y < 0 || (y > App.sHeight-height);
     }
 
-    public void move(boolean left, boolean right, boolean up, boolean down, long now) {
+    public void move(boolean left, boolean right, boolean up, boolean down) {
+        if(left || right || up || down) moving = true;
+        else moving = false;
         if(!outOfScreenH()){
-            if(left == true) x-=speed;
-            if(right == true) x+=speed;
+            if(left == true) {
+                x-=speed; 
+                shield.setX(x);
+            }
+            if(right == true) {
+                x+=speed; 
+                shield.setX(x);
+            }
+            shield.setTranslateX(x);
         }
         if(!outOfScreenV()){
-            if(up == true) y-=(speed - 5);
-            if(down == true) y+=(speed - 5);
-        }
-        if(left || right || up || down){
-            if (now - lastFrame >= frameChangeInterval){
-                sprite.setImage(App.assets.playerIMGS[frameIndex]);
-                frameIndex = (++frameIndex) % App.assets.playerIMGS.length;
+            if(up == true) {
+                y-=(speed - 3);
+                shield.setY(y);
             }
+            if(down == true) {
+                y+=(speed - 3); 
+                shield.setY(y);
+            }
+            shield.setTranslateY(y);
         }
+
         if(x < 0) x = 0; 
         else if(x > App.sWidth-width) x = App.sWidth-width; 
         if(y < 0) y = 0; 
@@ -74,5 +93,30 @@ public class Player extends GameObject {
     public Pane getRoot(){return root;}
     
     @Override
-    public void update(){}
+    public void update(){
+        shield.setVisible(!canBeIntersected);
+    }
+
+    public void update(long now){
+        if(!(outOfScreenH() || outOfScreenV())){
+            if(moving){
+                if (now - lastFrame >= frameChangeInterval){
+                    if(isMegaBullet)
+                        sprite.setImage(App.assets.shootingPlayerIMGS[frameIndex]);
+                    else 
+                        sprite.setImage(App.assets.playerIMGS[frameIndex]);
+                    frameIndex = (++frameIndex) % App.assets.playerIMGS.length;
+                    lastFrame = now;
+                }
+            }
+            else{
+                if(isMegaBullet) sprite.setImage(App.assets.shootingPlayerIMGS[frameIndex]);
+                else sprite.setImage(App.assets.playerIMGS[frameIndex]);
+            }
+        }
+    }
+
+    public StackPane getPlayer() {
+        return completPlayer;
+    }
 }

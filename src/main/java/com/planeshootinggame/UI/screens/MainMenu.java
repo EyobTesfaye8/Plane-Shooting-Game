@@ -15,23 +15,25 @@ public class MainMenu {
         Label title = new Label("Plane Shooting Game");
         title.getStyleClass().add("title");
 
-        Button play = new Button("Play");
-        Button settings = new Button("Settings");
-        Button exit = new Button("Exit");
+        Button playBtn = new Button("Play");
+        Button hiscoreBtn = new Button("Highscore");
+        Button settingsBtn = new Button("Settings");
+        Button exitBtn = new Button("Exit");
 
-        play.getStyleClass().add("menu-button");
-        settings.getStyleClass().add("menu-button");
-        exit.getStyleClass().add("menu-button");
+        playBtn.getStyleClass().add("menu-button");
+        hiscoreBtn.getStyleClass().add("menu-button");
+        settingsBtn.getStyleClass().add("menu-button");
+        exitBtn.getStyleClass().add("menu-button");
 
-        exit.setOnAction(e -> System.exit(0));
-
-        VBox layout = new VBox(20, title, play, settings, exit);
+        
+        VBox layout = new VBox(20, title, playBtn, hiscoreBtn, settingsBtn, exitBtn);
         layout.setAlignment(Pos.CENTER);
-
+        
         Scene scene = new Scene(layout, App.sWidth,App.sHeight);
         scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
-
-        play.setOnAction(e -> {
+        
+        playBtn.setOnAction(e -> {
+            if(!App.assets.mute) App.assets.click.play();
             App.showGame();
             HUD.resume();
             System.out.println(App.g.getRoot().getChildren().contains(App.hudLayer));
@@ -40,6 +42,18 @@ public class MainMenu {
             App.g.init_player();
             App.g.startGame();
         });
+
+        hiscoreBtn.setOnAction(e -> {
+            App.showHighscore();
+            if(!App.assets.mute) App.assets.click.play();
+        });
+
+        settingsBtn.setOnAction(e -> {
+            App.showSettings();
+            if(!App.assets.mute) App.assets.click.play();
+        });
+
+        exitBtn.setOnAction(e -> System.exit(0));
 
         return scene;
     }

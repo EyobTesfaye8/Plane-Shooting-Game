@@ -1,19 +1,15 @@
 package com.planeshootinggame;
 
 import com.planeshootinggame.UI.overlays.HUD;
-import com.planeshootinggame.UI.screens.GameOver;
-import com.planeshootinggame.UI.screens.GamePause;
-import com.planeshootinggame.UI.screens.MainMenu;
+import com.planeshootinggame.UI.screens.*;
 
 import javafx.application.Application;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import java.io.IOException;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.image.ImageView;
-import javafx.scene.control.Label;
 
 public class App extends Application {
     public static Pane gameLayer = new Pane();
@@ -26,12 +22,15 @@ public class App extends Application {
     public static int sHeight = 1100;
     public static GameEngine g;
     public static Scene gameScene;
-    public static MainMenu menu;
+    public static MainMenu menu = new MainMenu();
+    public static Settings settings = new Settings();
+    public static HighScore highscore = new HighScore();
 
     private static Stage stage;
 
     @Override
     public void start(Stage primaryStage) throws IOException {
+        HighScoreManager.loadScores();
         stage = primaryStage;
         ImageView background = new ImageView(assets.backgroundIMG);
         background.setFitWidth(sWidth);
@@ -46,8 +45,7 @@ public class App extends Application {
         root.getChildren().addAll(gameLayer, hudLayer);
         
         gameScene = new Scene(root, sWidth, sHeight);
-        
-        menu = new MainMenu();
+
         // Scene mainMenuScene = menu.getScene(stage);
 
         stage.setX(250);
@@ -79,6 +77,13 @@ public class App extends Application {
         stage.setScene(gameScene);
     }
 
+    public static void showSettings(){
+        stage.setScene(settings.createSettingsScene(stage));
+    }
+
+    public static void showHighscore(){
+        stage.setScene(highscore.createHighScoreScene(stage));
+    }
     public static void main(String[] args) {
         launch();
     }

@@ -37,7 +37,7 @@ public class GameEngine extends App{
     private long enemySpawnInterval =       2000000000L,    lastEnemySpawn = 0;
     private long enemyShootInterval =       1000000000L,    lastEnemyShoot = 0;
     private long playerImmunityInterval =   3000000000L,    lastImmunity = 0;
-    private long playerShootInterval =      1500000000L,     lastShot = 0;
+    private long playerShootInterval =      150000000L,     lastShot = 0;
     private GameOver gameOverScene;
     // private Pane gamePausedRoot = new GamePaused().getView();
 
@@ -69,6 +69,8 @@ public class GameEngine extends App{
                     stopGame();
                     reset();
                     showGameOver();
+                    HighScoreManager.submitScore(score);
+                    score = 0;
                     return;
                 }
                 if (gamePaused) {
@@ -112,7 +114,7 @@ public class GameEngine extends App{
         playerBullets.getBullets().clear();
         enemyBullets.getBullets().clear();
         powerups.getPowerups().clear();
-        root.getChildren().remove(player.getSprite());
+        root.getChildren().remove(player.getPlayer());
     }
     
     public void startGame() {
@@ -152,16 +154,17 @@ public class GameEngine extends App{
                 case DOWN -> down = false;
                 case ESCAPE -> {
                     HUD.togglePause();
-                        pauseMenu.show();
+                    pauseMenu.show();
                 }
             }
         });
     }
-
+    
     private void update(long now) {
         setInput();
+        checkCollisions();
         gamePaused = HUD.isPaused();
-        player.move(left, right, up, down, now);
+        player.move(left, right, up, down);
         if(!gamePaused){
             pauseMenu.hide();
             if(!player.canBeIntersected()){
@@ -187,6 +190,7 @@ public class GameEngine extends App{
             }
             enemies.update(now);
             player.update();
+            player.update(now);
             playerBullets.update();
             enemyBullets.update();
             powerups.update();
@@ -221,7 +225,6 @@ public class GameEngine extends App{
         }
         
         // System.out.println(player.getLives());
-        checkCollisions();
         removeOffscreen();
     }
 
@@ -235,9 +238,6 @@ public class GameEngine extends App{
                 player.damage();
                 player.canBeIntersectedToggle();
                 if(player.getLives() <= 0){
-                    // reset();
-                    // root.getChildren().remove(player.getSprite());
-                    score = 0;
                     scoreText.setText("Score: "+score);
                     gameOver = true;
                 }
@@ -281,7 +281,6 @@ public class GameEngine extends App{
                 player.canBeIntersectedToggle();
                 if(player.getLives() <= 0){
                     root.getChildren().remove(player.sprite);
-                    score = 0;
                     scoreText.setText("Score: "+score);
                     gameOver = true;
                 }
@@ -333,7 +332,7 @@ public class GameEngine extends App{
 
         pauseButton.setOnMouseClicked(e -> {
             HUD.togglePause();
-
+            if(!App.assets.mute) App.assets.click.play();
             if (HUD.isPaused()) {
                 pauseMenu.show();
             }

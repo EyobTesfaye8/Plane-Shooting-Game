@@ -10,7 +10,7 @@ final public class NormalBullet extends Bullet{
     // ImageView bulletImage = new ImageView(App.assets.normalBulletIMG);
 
     public NormalBullet(double x, double y){
-        super(x, y, 10, 200);
+        super(x, y, 10, 130);
         this.dy = 5;
         this.bulletPower = 1;
         this.sprite = new ImageView(App.assets.normalBulletIMG);

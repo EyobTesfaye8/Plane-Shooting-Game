@@ -3,6 +3,7 @@
 
 # Log files
 *.log
+*.txt
 
 # Java crash files
 hs_err_pid*

@@ -42,17 +42,20 @@ public class GamePause extends StackPane {
         resumeBtn.setOnAction(e -> {
             App.g.startGame();
             HUD.togglePause();
+            if(!App.assets.mute) App.assets.click.play();
         });
         restartBtn.setOnAction(e -> {
             App.g.reset();
             App.g.init_player();
             App.g.startGame();
             HUD.resume();
+            if(!App.assets.mute) App.assets.click.play();
         });
         quitBtn.setOnAction(e -> {
             App.g.stopGame();
             App.g.reset();
             App.showMenu();
+            if(!App.assets.mute) App.assets.click.play();
         });
         resumeBtn.getStyleClass().add("menu-button");
         restartBtn.getStyleClass().add("menu-button");
