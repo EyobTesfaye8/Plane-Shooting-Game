@@ -26,18 +26,14 @@ public class GameEngine extends App{
     private BulletManager enemyBullets;
     private EnemyManager enemies;
     private PowerupManager powerups;
-    private Text scoreText;
-    private static int score = 0;
+    private int score = 0;
     private boolean timerRunning = false;
     private boolean left, right, up, down;
-    private boolean isEnemyDamaged = false;
     private boolean gameOver, gamePaused;
     private long enemySpawnInterval =       2000000000L,    lastEnemySpawn = 0;
-    private long enemyShootInterval =       1000000000L,    lastEnemyShoot = 0;
     private long playerImmunityInterval =   3000000000L,    lastImmunity = 0;
     private long playerShootInterval =      1500000000L,     lastShot = 0;
     private GameOver gameOverScene;
-    // private Pane gamePausedRoot = new GamePaused().getView();
 
     public GameEngine(Pane root) {
         this.root = root;
@@ -45,13 +41,9 @@ public class GameEngine extends App{
         enemyBullets = new BulletManager(root);
         enemies = new EnemyManager(root);
         powerups = new PowerupManager(root);
-        scoreText = new Text(100, 200, "Score: "+score);
-        scoreText.setFont(Font.font("arial", FontWeight.BOLD, 30));
-        root.getChildren().add(scoreText);
         pauseMenu = new GamePause();
         createHUD();
         initTimer();
-        // showGamePaused();
     }
 
 
@@ -79,16 +71,12 @@ public class GameEngine extends App{
         };
     }
 
-    static int getScore(){return score;}
+    int getScore(){return score;}
     
-    public void turnOffGame(){
-        // reset();
-        gameOver = true;
-    }
-    public void turnONGame(){
-        // reset();
-        gameOver = false;
-    }
+    public void turnOffGame(){gameOver = true;}
+    public void turnONGame(){gameOver = false;}
+    public Scene getGameOverScene(Stage stage){return gameOverScene.getScene(stage, score);}
+    public Pane getRoot(){return this.root;}
 
     public void reset(){
         left = right = up = down = false;
@@ -131,9 +119,6 @@ public class GameEngine extends App{
         }
     }
     
-    public Scene getGameOverScene(Stage stage){
-        return gameOverScene.getScene(stage, score);
-    }
 
     public void setInput(){
         App.gameScene.setOnKeyPressed(e -> {
@@ -237,7 +222,6 @@ public class GameEngine extends App{
                 HUD.damage();
                 player.canBeIntersectedToggle();
                 if(player.getLives() <= 0){
-                    scoreText.setText("Score: "+score);
                     gameOver = true;
                 }
             }
@@ -268,7 +252,6 @@ public class GameEngine extends App{
                     itB.remove();
                     root.getChildren().remove(b.getSprite());
                 }
-                scoreText.setText("Score: "+score);
             }
         }
         // player vs enemy bullets
@@ -282,7 +265,6 @@ public class GameEngine extends App{
                 player.canBeIntersectedToggle();
                 if(player.getLives() <= 0){
                     root.getChildren().remove(player.sprite);
-                    scoreText.setText("Score: "+score);
                     gameOver = true;
                 }
             }
@@ -298,7 +280,6 @@ public class GameEngine extends App{
                 else if(p.getClass() == Shield.class) facts.showFact(FactType.SHIELD_FACT);
                 else if(p.getClass() == Speedup.class) facts.showFact(FactType.HORSES_FACT);
                 else facts.showFact(FactType.WEAPONS_USED_FACT);
-                // if(p.getClass() == ExtraLife.class) facts.showFact(FactType.LOGISTICS_FACT);
             }
         }
 
@@ -310,8 +291,6 @@ public class GameEngine extends App{
         enemyBullets.removeOffscreen();
         powerups.removeOffscreen();
     }
-
-    public Pane getRoot(){return this.root;}
     
     public void createHUD() {
         Label scoreLabel = new Label("Score: 0");
@@ -336,12 +315,10 @@ public class GameEngine extends App{
 
         pauseButton.setOnMouseClicked(e -> {
             HUD.togglePause();
-            if(!App.assets.mute) App.assets.click.play();
+            if(!AssetLoader.mute) App.assets.click.play();
             if (HUD.isPaused()) {
                 pauseMenu.show();
             }
-            // else {
-            //     pauseMenu.hide();}
         });
 
         hudLayer.getChildren().addAll(pauseMenu, scoreLabel, healthLabel, pauseButton);

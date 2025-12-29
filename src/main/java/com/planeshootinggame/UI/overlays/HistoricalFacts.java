@@ -12,7 +12,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
 public class HistoricalFacts extends StackPane{
-    Text note = new Text();
+    Label note = new Label();
     Random r = new Random();
     Button xBtn = new Button("X");
     VBox contentBox = new VBox(20);
@@ -84,7 +84,7 @@ public class HistoricalFacts extends StackPane{
 
         contentBox.setAlignment(Pos.CENTER);
 
-        Label title = new Label("HISTORICAL FACT");
+        Label title = new Label("ADWA HISTORICAL FACT");
         title.getStyleClass().add("title");
 
         note.getStyleClass().add("label-text");

@@ -30,7 +30,7 @@
 /* Labels */
 .label-text {
     -fx-font-size: 24px;      /* bigger text */
-    -fx-text-fill: white;     /* pure white */
+    -fx-text-fill: whitesmoke;     /* pure white */
     -fx-font-weight: 600;     /* semi-bold for readability */
 }
 

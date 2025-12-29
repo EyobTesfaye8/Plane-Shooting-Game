@@ -17,7 +17,7 @@ public class PowerupManager {
     public PowerupManager(Pane root) { this.root = root; }
 
     public void spawnPowerup(double x, double y) {
-       double randomNUM = r.nextDouble()*200; //1000
+       double randomNUM = r.nextDouble()*1000;
        boolean spawned = false;
        if(randomNUM < 200) spawned = true;
        if(spawned){

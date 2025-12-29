@@ -5,8 +5,6 @@ import java.util.concurrent.CompletableFuture;
 import com.planeshootinggame.*;
 
 import javafx.scene.image.ImageView;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 
 final public class ShootingEnemy extends Enemy {
     // Rectangle r = (Rectangle) sprite;

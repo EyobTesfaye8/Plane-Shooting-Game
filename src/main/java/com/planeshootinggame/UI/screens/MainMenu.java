@@ -1,6 +1,7 @@
 package com.planeshootinggame.UI.screens;
 
 import com.planeshootinggame.App;
+import com.planeshootinggame.AssetLoader;
 import com.planeshootinggame.UI.overlays.HUD;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -30,13 +31,14 @@ public class MainMenu {
         
         Scene scene = new Scene(layout, App.sWidth,App.sHeight);
         scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
-        
+        if(!AssetLoader.mute) App.assets.bgSound.play();
         playBtn.setOnAction(e -> {
             if(!App.assets.mute) App.assets.click.play();
             App.showGame();
             HUD.resume();
             System.out.println(App.g.getRoot().getChildren().contains(App.hudLayer));
             // App.g.init_player_again();
+            App.assets.bgSound.stop();
             App.g.turnONGame();
             App.g.init_player();
             App.g.startGame();

@@ -2,11 +2,14 @@ package com.planeshootinggame;
 
 import javafx.scene.image.Image;
 import javafx.scene.media.AudioClip;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 public class AssetLoader {
     // General setting
     // public static double volume      =  1;
     public static boolean mute       =  false;
     // Resourses
+    public MediaPlayer bgSound;
     public Image shootingEnemyIMGs[] =  new Image[20];
     public Image meleeEnemyIMGs[] =     new Image[20];
     public Image playerIMGS[] =         new Image[4];
@@ -28,6 +31,7 @@ public class AssetLoader {
     public Image meleeEnemyHurtIMG =    new Image(getClass().getResource("/Assets/Image/enemies/meleeHurt.png").toExternalForm());
 
     public AudioClip click =            new AudioClip(getClass().getResource("/Assets/Sound/MenuSelectionClick.wav").toExternalForm()); 
+    public Media backgroundMusic =              new Media(getClass().getResource("/Assets/Sound/bgSound.mp3").toExternalForm());
 
     public AssetLoader(){
         for(int i = 0; i < 20; i++){
@@ -38,5 +42,8 @@ public class AssetLoader {
             playerIMGS[i-1] =           new Image(getClass().getResource("/Assets/Image/player/playerMove/playerMove"+i+".png").toExternalForm()); 
             shootingPlayerIMGS[i-1] =   new Image(getClass().getResource("/Assets/Image/player/playerMove/playerMoveRifle"+i+".png").toExternalForm());
         }
+        bgSound = new MediaPlayer(backgroundMusic);
+        bgSound.setCycleCount(MediaPlayer.INDEFINITE);
+        bgSound.setVolume(0.6);
     }
 }

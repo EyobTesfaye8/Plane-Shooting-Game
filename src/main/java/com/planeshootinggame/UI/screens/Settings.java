@@ -34,6 +34,7 @@ public class Settings {
         backButton.setOnAction(e -> {
                 App.showMenu();
                 if(!AssetLoader.mute) App.assets.click.play();
+                else {App.assets.bgSound.stop();}
         });
 
         // Layout
