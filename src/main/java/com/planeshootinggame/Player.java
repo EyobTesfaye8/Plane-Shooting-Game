@@ -15,7 +15,7 @@ public class Player extends GameObject {
     private int frameIndex = 0;
     private long lastFrame = 0;
     private long frameChangeInterval = 10_000_000L;
-    private ImageView shield; 
+    private ImageView shield;
     private StackPane completPlayer;
     private boolean moving = false;
     // private boolean manyBullets = true;
@@ -24,7 +24,7 @@ public class Player extends GameObject {
         super(x,y,100,150);
         this.root = root;
         this.lives = 3;
-        this.speed = 6;
+        this.speed = 3;
         shield =  new ImageView(App.assets.playerShield);
         shield.setFitHeight(height+10);
         shield.setFitWidth(width+10);
@@ -42,20 +42,12 @@ public class Player extends GameObject {
     public void makeMega(){isMegaBullet = true;}
     public void removeMega(){isMegaBullet = false;}
     public void canBeIntersectedToggle(){canBeIntersected = !canBeIntersected;}
+    public void intersectable(){canBeIntersected = true;}
+    public void notIntersectable(){canBeIntersected = false;}
     public void damage(){lives--;}
     public void heal(){lives++;}
-    public void speedup(){speed+=10;}
-    public void slowDown(){speed-=10;}
-
-    @Override
-    public boolean outOfScreenH(){
-        return x < 0 || (x > App.sWidth-width);
-    }
-
-    @Override
-    public boolean outOfScreenV(){
-        return y < 0 || (y > App.sHeight-height);
-    }
+    public void speedup(){speed+=3;}
+    public void slowDown(){speed-=3;}
 
     public void move(boolean left, boolean right, boolean up, boolean down) {
         if(left || right || up || down) moving = true;
@@ -73,11 +65,11 @@ public class Player extends GameObject {
         }
         if(!outOfScreenV()){
             if(up == true) {
-                y-=(speed - 3);
+                y-=(speed - 1);
                 shield.setY(y);
             }
             if(down == true) {
-                y+=(speed - 3); 
+                y+=(speed - 1); 
                 shield.setY(y);
             }
             shield.setTranslateY(y);
@@ -86,11 +78,11 @@ public class Player extends GameObject {
         if(x < 0) x = 0; 
         else if(x > App.sWidth-width) x = App.sWidth-width; 
         if(y < 0) y = 0; 
-        else if(y > App.sHeight-height) y = App.sHeight-height; 
+        else if(y > App.sHeight-height) y = App.sHeight-height;
         updateSprite();
     }
     
-    public Pane getRoot(){return root;}
+    // public Pane getRoot(){return root;}
     
     @Override
     public void update(){

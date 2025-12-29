@@ -11,11 +11,11 @@ import javafx.scene.image.ImageView;
 final public class Mega extends Powerup {
     private long duration;
     public Mega(double x, double y) {
-        super(x,y,60,70);
+        super(x,y,60,80);
         this.sprite = new ImageView(App.assets.riflePowerupIMG);
         sprite.setFitWidth(width);
         sprite.setFitHeight(height);
-        this.duration = 5000;
+        this.duration = 10000;
     }
 
     @Override

@@ -16,8 +16,8 @@ final public class ShootingEnemy extends Enemy {
 
     public ShootingEnemy(double x, double y){
         super(x,y, 100, 90);
-        this.dy = 2;
-        this.health = 10;
+        this.dy = 1.5;
+        this.health = 2;
         this.sprite = new ImageView(App.assets.shootingEnemyIMGs[frameIndex]);
         sprite.setRotate(90);
         sprite.setFitWidth(width);
@@ -37,7 +37,7 @@ final public class ShootingEnemy extends Enemy {
                 Thread.sleep((long)(Math.random()*1500 + 500));
                 canShoot = true;
             }catch(InterruptedException e){
-                // ignore
+                System.out.println("Interrupted while sleeping, shootTimer - shooting enemy");
             }
         });
     }

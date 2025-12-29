@@ -1,9 +1,6 @@
 package com.planeshootinggame;
 
-import javafx.scene.Node;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.StackPane;
-import javafx.scene.shape.Rectangle;
 
 public abstract class GameObject {
     protected ImageView sprite;
@@ -20,11 +17,15 @@ public abstract class GameObject {
 
     public ImageView getSprite(){return sprite;}
 
-    public abstract boolean outOfScreenH();
-    public abstract boolean outOfScreenV();
+    public boolean outOfScreenH(){
+        return x < 0 || x > App.sWidth-width; 
+    }
+
+    public boolean outOfScreenV(){
+        return y < 0 || y > App.sHeight-height; 
+    }
+
     public abstract void update();
-    // public abstract void update(long now);
-    public boolean isNull(){return this.sprite != null;}
 
     public boolean intersects(GameObject other) {
         return this.x < other.x + other.width &&

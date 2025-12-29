@@ -1,6 +1,7 @@
 package com.planeshootinggame.UI.screens;
 
 import com.planeshootinggame.App;
+import com.planeshootinggame.AssetLoader;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -21,7 +22,7 @@ public class Settings {
         CheckBox muteCheckBox = new CheckBox();
         if (App.assets.mute) muteCheckBox.setSelected(true);
         muteCheckBox.setOnAction(e -> {
-            App.assets.mute = muteCheckBox.isSelected();
+            AssetLoader.mute = muteCheckBox.isSelected();
         });
 
         HBox muteBox = new HBox(15, muteLabel, muteCheckBox);
@@ -32,7 +33,7 @@ public class Settings {
         backButton.getStyleClass().add("menu-button");
         backButton.setOnAction(e -> {
                 App.showMenu();
-                if(!App.assets.mute) App.assets.click.play();
+                if(!AssetLoader.mute) App.assets.click.play();
         });
 
         // Layout

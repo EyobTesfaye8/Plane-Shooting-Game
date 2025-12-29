@@ -10,10 +10,8 @@ final public class BigEnemy extends Enemy {
     
     public BigEnemy(double x, double y){
         super(x,y, 130, 120);
-        this.dy = 2;
-        this.health = 30;
-        this.powerupDropChance = 0.25; 
-        // r.setFill(Color.MAGENTA);
+        this.dy = 1;
+        this.health = 5;
         this.sprite = new ImageView(App.assets.shootingEnemyIMGs[frameIndex]);
         sprite.setRotate(90);
         sprite.setFitWidth(width);
@@ -22,7 +20,6 @@ final public class BigEnemy extends Enemy {
 
     @Override
     public void update() {
-        
         y += dy;
         updateSprite();
     }

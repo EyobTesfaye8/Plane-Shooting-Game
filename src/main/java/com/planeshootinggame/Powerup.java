@@ -13,16 +13,6 @@ abstract public sealed class Powerup extends GameObject
     }
 
     @Override
-    public boolean outOfScreenH(){
-        return x < 0 || x > App.sWidth-width; 
-    }
-
-    @Override
-    public boolean outOfScreenV(){
-        return y < 0 || y > App.sHeight-height; 
-    }
-
-    @Override
     public void update() {
         y += dy;
         updateSprite();

@@ -13,10 +13,9 @@ import java.util.Iterator;
 import java.util.concurrent.CompletableFuture;
 
 import com.planeshootinggame.EnemyTypes.*;
-import com.planeshootinggame.UI.overlays.HUD;
-import com.planeshootinggame.UI.screens.GameOver;
-import com.planeshootinggame.UI.screens.GamePause;
-// import com.planeshootinggame.UI.MainMenu;
+import com.planeshootinggame.PowerupTypes.*;
+import com.planeshootinggame.UI.overlays.*;
+import com.planeshootinggame.UI.screens.*;
 import com.planeshootinggame.BulletTypes.*;
 
 public class GameEngine extends App{
@@ -28,16 +27,15 @@ public class GameEngine extends App{
     private EnemyManager enemies;
     private PowerupManager powerups;
     private Text scoreText;
-    private int score = 0;
+    private static int score = 0;
     private boolean timerRunning = false;
     private boolean left, right, up, down;
-    // private boolean canBeIntersected = true;
     private boolean isEnemyDamaged = false;
     private boolean gameOver, gamePaused;
     private long enemySpawnInterval =       2000000000L,    lastEnemySpawn = 0;
     private long enemyShootInterval =       1000000000L,    lastEnemyShoot = 0;
     private long playerImmunityInterval =   3000000000L,    lastImmunity = 0;
-    private long playerShootInterval =      150000000L,     lastShot = 0;
+    private long playerShootInterval =      1500000000L,     lastShot = 0;
     private GameOver gameOverScene;
     // private Pane gamePausedRoot = new GamePaused().getView();
 
@@ -81,7 +79,7 @@ public class GameEngine extends App{
         };
     }
 
-    int getScore(){return score;}
+    static int getScore(){return score;}
     
     public void turnOffGame(){
         // reset();
@@ -212,11 +210,11 @@ public class GameEngine extends App{
             if(e.canShoot()){
                 Bullet b;
                 if(e.getClass() == BigEnemy.class){
-                    b = new EnemyBullet(e.x+e.width/2-30, e.y, e.dy+10);
+                    b = new EnemyBullet(e.x+e.width/2-65, e.y+40, e.dy+3);
                     enemyBullets.addBullet(b);
                 }
                 else if(e.getClass() == ShootingEnemy.class){
-                    b = new EnemyBullet(e.x+e.width/2-30, e.y, e.dy+10);
+                    b = new EnemyBullet(e.x+e.width/2-60, e.y+40, e.dy+3);
                     enemyBullets.addBullet(b);
                 }
                 e.canShoot = false;
@@ -236,6 +234,7 @@ public class GameEngine extends App{
                 it.remove();
                 root.getChildren().remove(e.getSprite());
                 player.damage();
+                HUD.damage();
                 player.canBeIntersectedToggle();
                 if(player.getLives() <= 0){
                     scoreText.setText("Score: "+score);
@@ -264,6 +263,7 @@ public class GameEngine extends App{
                         powerups.spawnPowerup(e.x, e.y);
                         itE.remove();
                         root.getChildren().remove(e.getSprite());
+                        HUD.addScore(score);
                     }
                     itB.remove();
                     root.getChildren().remove(b.getSprite());
@@ -278,6 +278,7 @@ public class GameEngine extends App{
                 itB.remove();
                 root.getChildren().remove(b.getSprite());
                 player.damage();
+                HUD.damage();
                 player.canBeIntersectedToggle();
                 if(player.getLives() <= 0){
                     root.getChildren().remove(player.sprite);
@@ -293,29 +294,32 @@ public class GameEngine extends App{
                 it.remove();
                 root.getChildren().remove(p.getSprite());
                 p.apply(player);
+                if(p.getClass() == ExtraLife.class) facts.showFact(FactType.LOGISTICS_FACT);
+                else if(p.getClass() == Shield.class) facts.showFact(FactType.SHIELD_FACT);
+                else if(p.getClass() == Speedup.class) facts.showFact(FactType.HORSES_FACT);
+                else facts.showFact(FactType.WEAPONS_USED_FACT);
+                // if(p.getClass() == ExtraLife.class) facts.showFact(FactType.LOGISTICS_FACT);
             }
         }
 
     }
         
     public void removeOffscreen(){
-        // player.removeOffscreen();
         enemies.removeOffscreen();
         playerBullets.removeOffscreen();
         enemyBullets.removeOffscreen();
-        // powerups.removeOffscreen(sheight);
+        powerups.removeOffscreen();
     }
 
     public Pane getRoot(){return this.root;}
     
-    public static void createHUD() {
-
+    public void createHUD() {
         Label scoreLabel = new Label("Score: 0");
         scoreLabel.setStyle("-fx-font-size: 28px; -fx-text-fill: white;");
         scoreLabel.setTranslateX(20);
         scoreLabel.setTranslateY(20);
 
-        Label healthLabel = new Label("Health: 100");
+        Label healthLabel = new Label("Lives: 3");
         healthLabel.setStyle("-fx-font-size: 28px; -fx-text-fill: red;");
         healthLabel.setTranslateX(20);
         healthLabel.setTranslateY(60);

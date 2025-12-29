@@ -28,10 +28,9 @@ public class AssetLoader {
     public Image meleeEnemyHurtIMG =    new Image(getClass().getResource("/Assets/Image/enemies/meleeHurt.png").toExternalForm());
 
     public AudioClip click =            new AudioClip(getClass().getResource("/Assets/Sound/MenuSelectionClick.wav").toExternalForm()); 
-    public AssetLoader(){
 
+    public AssetLoader(){
         for(int i = 0; i < 20; i++){
-            // System.out.println("/Assets/Image/enemies/shootingMove/survivor-move_knife_"+i+".png");
             shootingEnemyIMGs[i] =      new Image(getClass().getResource("/Assets/Image/enemies/shootingMove/survivor-move_rifle_"+i+".png").toExternalForm());
             meleeEnemyIMGs[i] =         new Image(getClass().getResource("/Assets/Image/enemies/meleeMove/survivor-move_knife_"+i+".png").toExternalForm());
         }

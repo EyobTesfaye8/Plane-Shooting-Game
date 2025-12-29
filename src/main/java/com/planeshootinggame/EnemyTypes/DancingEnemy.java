@@ -4,25 +4,19 @@ import com.planeshootinggame.App;
 import com.planeshootinggame.Enemy;
 
 import javafx.scene.image.ImageView;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import java.lang.Math;
 
 final public class DancingEnemy extends Enemy {
-    public double nextDestination;
-    // Rectangle r = (Rectangle) sprite;
-    // private Image normalEnemyIMG = new Image("");
-    
-    
+    private double nextDestination;
+
     public DancingEnemy(double x, double y){
         super(x,y, 110, 140);
-        this.dy = 8;
-        this.dx = 6;
-        this.health = 5;
-        this.powerupDropChance = 0.15; 
+        this.dy = 1.5;
+        this.dx = 2;
+        this.health = 2;
         this.nextDestination = x;
-        // r.setFill(Color.ROYALBLUE);
-        this.sprite = new ImageView(App.assets.normalBulletIMG);
+        this.sprite = new ImageView(App.assets.meleeEnemyIMGs[frameIndex]);
+        sprite.setRotate(90);
         sprite.setFitWidth(width);
         sprite.setFitHeight(height);
     }
@@ -51,9 +45,12 @@ final public class DancingEnemy extends Enemy {
 
     @Override
     public void changeImage(long now){
-        // if(this.isDamaged())
-        //     r.setFill(Color.BLACK);
-        // else
-        //     r.setFill(Color.ROYALBLUE);
+        if(this.isDamaged()) sprite.setImage(App.assets.meleeEnemyHurtIMG);
+
+        else if (now - lastFrame >= frameChangeInterval){
+            frameIndex = (++frameIndex) % App.assets.meleeEnemyIMGs.length;
+            sprite.setImage(App.assets.meleeEnemyIMGs[frameIndex]);
+            lastFrame = now;
+        }
     }
 }

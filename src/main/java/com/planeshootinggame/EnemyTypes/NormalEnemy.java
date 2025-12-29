@@ -3,19 +3,16 @@ package com.planeshootinggame.EnemyTypes;
 import com.planeshootinggame.*;
 
 import javafx.scene.image.ImageView;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-// import javafx.scene.image.Image;
 
 final public class NormalEnemy extends Enemy {
 
     public NormalEnemy(double x, double y){
         super(x,y, 60, 70);
-        this.dy = 5;
-        this.health = 3;
+        this.dy = 1.5;
+        this.health = 2;
         this.powerupDropChance = 0.05;
-        // r.setFill(Color.BLUE);
         this.sprite = new ImageView(App.assets.meleeEnemyIMGs[frameIndex]);
+        sprite.setRotate(90);
         sprite.setFitWidth(width);
         sprite.setFitHeight(height);
     }
@@ -28,14 +25,17 @@ final public class NormalEnemy extends Enemy {
 
     @Override
     public void shootTimer(){
-        // Normal enemies do not shoot / attack
+        // Normal enemies do not shoot
     }
 
     @Override
     public void changeImage(long now){
-        // if(this.isDamaged())
-        //     r.setFill(Color.BLACK);
-        // else
-        //     r.setFill(Color.BLUE);
+        if(this.isDamaged()) sprite.setImage(App.assets.meleeEnemyHurtIMG);
+
+        else if (now - lastFrame >= frameChangeInterval){
+            frameIndex = (++frameIndex) % App.assets.meleeEnemyIMGs.length;
+            sprite.setImage(App.assets.meleeEnemyIMGs[frameIndex]);
+            lastFrame = now;
+        }
     }
 }

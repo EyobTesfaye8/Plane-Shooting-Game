@@ -11,11 +11,11 @@ import javafx.scene.image.ImageView;
 final public class Speedup extends Powerup {
     private long duration;
     public Speedup(double x, double y) {
-        super(x,y,40,50);
+        super(x,y,60,80);
         this.sprite = new ImageView(App.assets.horsePowerupIMG);
         sprite.setFitWidth(width);
         sprite.setFitHeight(height);
-        this.duration = 3000;
+        this.duration = 10000;
     }
 
     @Override
@@ -26,7 +26,7 @@ final public class Speedup extends Powerup {
                 Thread.sleep(duration);
                 p.slowDown();
             }catch(InterruptedException e){
-                //ignore
+                System.out.println("Interrupted Execption: apply - speedup.java");
             }
         });
     }

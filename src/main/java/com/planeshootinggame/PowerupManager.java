@@ -22,22 +22,18 @@ public class PowerupManager {
        if(randomNUM < 200) spawned = true;
        if(spawned){
            Powerup p;
-           // if(randomNUM > 600){
-               // p = new ExtraLife(x, y, PowerupType.values()[r.nextInt(PowerupType.values().length)]);
+           if(randomNUM > 150){
                p = new Mega(x, y);
-           // }
-           // else if (randomNUM > 300){
-           //     enemy = new FastEnemy(r.nextInt(App.sWidth-100), -300);
-           // }
-           // else if (randomNUM > 200){
-           //     enemy = new BigEnemy(r.nextInt(App.sWidth-100), -300);
-           // }
-           // else if (randomNUM > 150){
-           //     enemy = new ShootingEnemy(r.nextInt(App.sWidth-100), -300);
-           // }
-           // else{
-           //     enemy = new DancingEnemy(r.nextInt(App.sWidth-100), -300);
-           // }
+           }
+           else if (randomNUM > 100){
+               p = new ExtraLife(x, y);
+           }
+           else if (randomNUM > 0){
+               p = new Speedup(x, y);
+           }
+           else {
+               p = new Shield(x, y);
+           }
            root.getChildren().add(p.sprite);
            powerups.add(p);
        }
@@ -54,7 +50,7 @@ public class PowerupManager {
     public Pane getRoot(){return this.root;}
     public List<Powerup> getPowerups(){return powerups;}
 
-    public void removeOffscreen(double height) {
+    public void removeOffscreen() {
         for (Iterator<Powerup> it = powerups.iterator(); it.hasNext();){
             Powerup p = it.next();
             if(p.y > App.sHeight+100){

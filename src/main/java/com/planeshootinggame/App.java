@@ -1,6 +1,6 @@
 package com.planeshootinggame;
 
-import com.planeshootinggame.UI.overlays.HUD;
+import com.planeshootinggame.UI.overlays.HistoricalFacts;
 import com.planeshootinggame.UI.screens.*;
 
 import javafx.application.Application;
@@ -12,19 +12,20 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.image.ImageView;
 
 public class App extends Application {
+    public static AssetLoader assets = new AssetLoader(); 
+    public static GameEngine g;
+
+    public static int sHeight = 1100;
+    public static int sWidth = 1600;
     public static Pane gameLayer = new Pane();
     public static Pane hudLayer = new Pane();
     public static StackPane root = new StackPane();
     public static GamePause pauseMenu;
-
-    public static AssetLoader assets = new AssetLoader(); 
-    public static int sWidth = 1600;
-    public static int sHeight = 1100;
-    public static GameEngine g;
     public static Scene gameScene;
     public static MainMenu menu = new MainMenu();
     public static Settings settings = new Settings();
     public static HighScore highscore = new HighScore();
+    public static HistoricalFacts facts = new HistoricalFacts();
 
     private static Stage stage;
 
@@ -41,24 +42,18 @@ public class App extends Application {
         gameLayer.setId("gameroot");
         
         g = new GameEngine(gameLayer);
-        
-        root.getChildren().addAll(gameLayer, hudLayer);
+        root.getChildren().addAll(gameLayer, hudLayer, facts);
         
         gameScene = new Scene(root, sWidth, sHeight);
-
-        // Scene mainMenuScene = menu.getScene(stage);
 
         stage.setX(250);
         stage.setY(100);
         stage.setMinWidth(sWidth);
         stage.setMinHeight(sHeight);
         stage.setResizable(false);
-        stage.setTitle("Plane Shooting Game");
-        // stage.setScene(g.getGameOverScene(stage));
-        // stage.setScene(mainMenuScene);
+        stage.setTitle("Adwa");
         showMenu();
         stage.show();
-        // g.startGame(); 
     }
 
     public static void showMenu(){

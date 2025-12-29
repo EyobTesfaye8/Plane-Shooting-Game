@@ -17,14 +17,4 @@ abstract public sealed class Bullet extends GameObject
     }
 
     public int bulletPower(){return bulletPower;}
-
-    @Override
-    public boolean outOfScreenH(){
-        return x < 0 || x > App.sWidth-200; 
-    }
-
-    @Override
-    public boolean outOfScreenV(){
-        return y < -100 || y > App.sHeight+100; 
-    }
 }

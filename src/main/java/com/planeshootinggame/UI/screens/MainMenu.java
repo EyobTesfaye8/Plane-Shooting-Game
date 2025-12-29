@@ -1,7 +1,6 @@
 package com.planeshootinggame.UI.screens;
 
 import com.planeshootinggame.App;
-import com.planeshootinggame.GameEngine;
 import com.planeshootinggame.UI.overlays.HUD;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -12,7 +11,7 @@ import javafx.geometry.Pos;
 public class MainMenu {
 
     public Scene getScene() {
-        Label title = new Label("Plane Shooting Game");
+        Label title = new Label("ADWA");
         title.getStyleClass().add("title");
 
         Button playBtn = new Button("Play");
